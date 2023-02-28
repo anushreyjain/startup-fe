@@ -13,6 +13,8 @@ const Text = ({
   const TextType = {
     body: "body",
     bodySmall: "bodySmall",
+    medium: "medium",
+    large: 'large',
     caption: "caption",
   };
 

@@ -3,8 +3,9 @@ import debounce from "../functions/debounce";
 import CardsLayout from "../organism/CardsLayout";
 import Header from "../organism/Header";
 import { Triangle } from "react-loader-spinner";
-const Dashboard = () => {
+const Dashboard = ({ user }) => {
   const [activeTab, setActiveTab] = useState("everything");
+  console.log(activeTab);
 
   const tabs = {
     home: [
@@ -20,23 +21,6 @@ const Dashboard = () => {
       },
     ],
     user: [
-      {
-        id: 1,
-        title: "My Creativity",
-        value: "my-creativity",
-      },
-      {
-        id: 2,
-        title: "Saved",
-        value: "saved",
-      },
-      {
-        id: 3,
-        title: "Profile",
-        value: "profile",
-      },
-    ],
-    admin: [
       {
         id: 1,
         title: "Everything",
@@ -63,7 +47,56 @@ const Dashboard = () => {
         value: "profile",
       },
     ],
+    admin: [
+      {
+        id: 1,
+        title: "Everything",
+        value: "everything",
+      },
+      {
+        id: 2,
+        title: "Trending",
+        value: "Trending",
+      },
+      {
+        id: 3,
+        title: "My Creativity",
+        value: "my-creativity",
+      },
+      {
+        id: 4,
+        title: "Submission",
+        value: "submission",
+      },
+      {
+        id: 5,
+        title: "Saved",
+        value: "saved",
+      },
+      {
+        id: 6,
+        title: "Profile",
+        value: "profile",
+      },
+    ],
   };
+
+  const [tabList, setTabList] = useState([]);
+
+  const isAdmin =
+    user?.signInUserSession?.idToken?.payload["cognito:groups"]?.includes(
+      "admin"
+    );
+
+  useEffect(() => {
+    if (user && isAdmin) {
+      setTabList(tabs.admin);
+    } else if (user && !isAdmin) {
+      setTabList(tabs.user);
+    } else {
+      setTabList(tabs.home);
+    }
+  }, [isAdmin]);
 
   const tabHandler = (value) => {
     setActiveTab(value);
@@ -312,43 +345,31 @@ const Dashboard = () => {
   ];
 
   //get dynamic header height
-  const headerRef = useRef();
-  const [height, setHeight] = useState(0);
-  const debounceGetClientHeight = debounce(function getClientHeight() {
-    const height = headerRef.current?.clientHeight;
-    setHeight(height.toString());
-  }, 1000);
+  // const headerRef = useRef();
+  // const [height, setHeight] = useState(0);
+  // function getClientHeight() {
+  //   const finalHeight = headerRef.current?.clientHeight;
+  //   console.log(finalHeight);
+  //   setHeight(finalHeight.toString());
+  // }
 
-  useEffect(() => {
-    setHeight(headerRef.current?.clientHeight.toString());
-    window.addEventListener("resize", debounceGetClientHeight);
-  }, []);
+  // useEffect(() => {
+  //   console.log(headerRef.current.clientHeight);
+  //   setHeight(headerRef.current?.clientHeight.toString());
+  //   window.addEventListener("resize", getClientHeight);
+  // }, []);
 
   return (
     <div>
       <Header
-        tabs={tabs}
+        tabs={tabList}
         tabHandler={tabHandler}
         activeTab={activeTab}
         slangOfTheDay={slangOfTheDay}
-        headerRef={headerRef}
+        user={user}
       />
 
-      {height ? (
-        <CardsLayout height={height} slangDetails={slangDetails} />
-      ) : (
-        <div className="h-screen w-full flex justify-center items-center">
-          <Triangle
-            height="80"
-            width="80"
-            color="#AC916B"
-            ariaLabel="triangle-loading"
-            wrapperStyle={{}}
-            wrapperClassName=""
-            visible={true}
-          />
-        </div>
-      )}
+      <CardsLayout isAdmin={isAdmin} activeTab={activeTab} slangDetails={slangDetails} />
     </div>
   );
 };

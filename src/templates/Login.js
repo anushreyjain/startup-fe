@@ -1,9 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../atoms/Button";
 import Logo from "../atoms/Logo";
 import Text from "../atoms/Text";
+import { Amplify, Auth, Hub } from "aws-amplify";
+import { CognitoHostedUIIdentityProvider } from "@aws-amplify/auth";
+import awsConfig from "../aws-exports";
+
+Amplify.configure(awsConfig);
 
 const Login = () => {
+  const [user, setUser] = useState(null);
+  console.log(user);
+  useEffect(() => {
+    const unsubscribe = Hub.listen("auth", ({ payload: { event, data } }) => {
+      switch (event) {
+        case "signIn":
+          setUser(data);
+          break;
+        case "signOut":
+          setUser(null);
+          break;
+        default:
+          break;
+      }
+    });
+
+    Auth.currentAuthenticatedUser()
+      .then((currentUser) => setUser(currentUser))
+      .catch(() => console.log("Not signed in"));
+
+    return unsubscribe;
+  }, []);
   return (
     <div className="fixed px-6 md:px-0 h-screen w-full bg-primary-300 flex justify-center items-center">
       <div className="text-center">
@@ -31,7 +58,11 @@ const Login = () => {
             size={"default"}
             iconPosition="Left"
             className="mt-8 font-semibold"
-            
+            onClick={() =>
+              Auth.federatedSignIn({
+                provider: CognitoHostedUIIdentityProvider.Google,
+              })
+            }
           >
             Sign in with Google
           </Button>

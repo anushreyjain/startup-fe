@@ -1,4 +1,3 @@
-import IcomoonReact from "icomoon-react";
 import Badge from "../atoms/Badge";
 import Text from "../atoms/Text";
 import DialogBox from "../components/DialogBox";

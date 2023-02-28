@@ -10,11 +10,12 @@ const Header = ({
   activeTab,
   slangOfTheDay,
   headerRef,
+  user,
   property,
 }) => {
   return (
     <div ref={headerRef} className="fixed w-full z-10 bg-primary-300">
-      <Navbar slangOfTheDay={slangOfTheDay} />
+      <Navbar user={user} slangOfTheDay={slangOfTheDay} />
       <div className="lg:hidden mt-4 flex flex-col space-y-2 text-center py-3 px-4 bg-white mx-4 rounded">
         <Text
           variant="bodySmall"

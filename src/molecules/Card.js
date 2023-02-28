@@ -3,7 +3,7 @@ import Text from "../atoms/Text";
 import IcomoonIcon from "../components/IcomoonIcon";
 import debounce from "../functions/debounce";
 
-const Card = ({ title, description, likes, status }) => {
+const Card = ({ title, description, likes, status, activeTab, isAdmin }) => {
   const myRef = useRef();
   const [width, setwidth] = useState("");
 
@@ -51,23 +51,31 @@ const Card = ({ title, description, likes, status }) => {
           </Text>
         </div>
         <div className="flex space-x-3">
-          <IcomoonIcon
-            icon={"pencil-square"}
-            size="20"
-            className="lg:hidden group-hover:block"
-          />
-          <IcomoonIcon
-            icon={"trash"}
-            size="20"
-            color={"red"}
-            className="lg:hidden group-hover:block"
-          />
-          {status === "approved" ? (
-            <IcomoonIcon icon={"check-badge"} size="20" />
-          ) : status === "pending" ? (
-            <IcomoonIcon icon={"clock"} size="20" />
-          ) : (
-            ""
+          {isAdmin && (
+            <>
+              <IcomoonIcon
+                icon={"pencil-square"}
+                size="20"
+                className="lg:hidden group-hover:block"
+              />
+              <IcomoonIcon
+                icon={"trash"}
+                size="20"
+                color={"red"}
+                className="lg:hidden group-hover:block"
+              />
+            </>
+          )}
+          {activeTab === "my-creativity" && (
+            <>
+              {status === "approved" ? (
+                <IcomoonIcon icon={"check-badge"} size="20" />
+              ) : status === "pending" ? (
+                <IcomoonIcon icon={"clock"} size="20" />
+              ) : (
+                ""
+              )}
+            </>
           )}
         </div>
       </div>
