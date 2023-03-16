@@ -12,6 +12,7 @@ import SlangModal from "./organism/SlangModal";
 import Dashboard from "./templates/Dashboard";
 import { Auth } from "aws-amplify";
 import Login from "./templates/Login";
+import { getFromPublic } from './utils/public.api'
 
 const App = () => {
   const options = [
@@ -56,6 +57,23 @@ const App = () => {
       })
       .catch(() => console.log("Not signed in"));
   }, []);
+
+  useEffect(() => {
+    getFromPublic({
+      query: 'getSlang',
+      fields: ['_id', 'title'],
+      variables: { id: 'testId' }
+    })
+      .then((res) => {
+        if(res.error) {
+          throw new Error(res.error);
+        }
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log('caught an error: ', err.message);
+      })
+  }, [])
 
   return (
     <div className="bg-primary-300 h-screen">
