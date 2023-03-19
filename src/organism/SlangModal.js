@@ -4,11 +4,13 @@ import Button from "../atoms/Button";
 import DialogBox from "../components/DialogBox";
 import InputWithLabel from "../molecules/InputWithLabel";
 import Dropdown from "../molecules/Dropdown";
+import AddRemoveInputField from "./AddRemoveInputFields";
+import IcomoonIcon from "../components/IcomoonIcon";
 
 const SlangDetailsModal = ({
   height = "max-h-[600px] md:max-h-fit",
   width = "min-w-screen",
-  closeHandler,
+  closeModal,
   options,
   ...property
 }) => {
@@ -17,20 +19,25 @@ const SlangDetailsModal = ({
       <DialogBox
         height={height}
         className=""
-        close={closeHandler}
+        closeModal={closeModal}
         isDisable={true}
         zIndex="z-50"
         width={"min-w-[50vw]"}
       >
         <div className="flex flex-col items-start space-y-6 md:space-y-8 w-full">
-          <Text
-            fontFamily={"font-Josefin-Slab"}
-            fontWeight="font-semibold"
-            className="text-2xl md:text-3xl"
-            variant=""
-          >
-            Add a slang
-          </Text>
+          <div className="flex justify-between w-full items-center">
+            <Text
+              fontFamily={"font-Josefin-Slab"}
+              fontWeight="font-semibold"
+              className="text-2xl md:text-3xl"
+              variant=""
+            >
+              Add a slang
+            </Text>
+            <div className="cursor-pointer">
+              <IcomoonIcon icon={"close"} size="30" onClick={closeModal} />
+            </div>
+          </div>
 
           <InputWithLabel
             label={"Title"}
@@ -49,11 +56,18 @@ const SlangDetailsModal = ({
             placeholder={"Write the meaning/description of your slang"}
           />
 
-          <Textarea
-            label={"Example/Usage"}
-            fontColor="text-secondary-900"
-            placeholder={"Write the example/usage of your slang"}
-          />
+          <div className="flex flex-col space-y-1 w-full">
+            <Text
+              variant="large"
+              className={"text-secondary-900"}
+              fontFamily={"font-Josefin-Slab"}
+              fontWeight={"font-semibold"}
+            >
+              Example/Usage
+            </Text>
+
+            <AddRemoveInputField />
+          </div>
 
           <Button type="contained" size={"default"}>
             Submit

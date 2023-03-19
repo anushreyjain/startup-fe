@@ -6,7 +6,7 @@ import iconSet from "../assets/selection.json";
 
 export default function IcomoonIcon({ color, size, icon, ...property }) {
   return (
-    <div className={`${property.className}`}>
+    <div className={`${property.className} flex items-center justify-center w-fit`}>
       <IcomoonReact
         iconSet={iconSet}
         color={color}

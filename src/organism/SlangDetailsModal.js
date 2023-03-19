@@ -6,33 +6,37 @@ import IcomoonIcon from "../components/IcomoonIcon";
 const SlangDetailsModal = ({
   height = "max-h-[600px] md:max-h-fit",
   width = "min-w-screen",
-  closeHandler,
+  closeModal,
   details,
   ...property
 }) => {
-  console.log("lwde", details);
   return (
     <div className={`${property.className}`} {...property}>
       <DialogBox
         height={height}
         className=""
-        close={closeHandler}
+        closeModal={closeModal}
         isDisable={true}
         zIndex="z-50"
       >
-        <div className="flex flex-col items-start space-y-4 md:space-y-8">
-          <div>
-            <Text
-              variant="large"
-              className={"text-secondary-900"}
-              fontWeight="font-semibold"
-              fontFamily="font-Josefin-Slab"
-            >
-              Title
-            </Text>
+        <div className="flex w-full flex-col items-start space-y-4 md:space-y-8">
+          <div className="w-full">
+            <div className="flex justify-between items-center">
+              <Text
+                variant="large"
+                className={"text-secondary-900"}
+                fontWeight="font-semibold"
+                fontFamily="font-Josefin-Slab"
+              >
+                Title
+              </Text>
+              <div className="cursor-pointer">
+                <IcomoonIcon icon={"close"} size="25" onClick={closeModal} />
+              </div>
+            </div>
             <Text className={"text-black"}>{details.title}</Text>
           </div>
-          <div>
+          <div className="w-full">
             <Text
               variant="large"
               className={"text-secondary-900"}
@@ -43,7 +47,7 @@ const SlangDetailsModal = ({
             </Text>
             <Text className={"text-black"}>{details.description}</Text>
           </div>
-          <div>
+          <div className="w-full">
             <Text
               variant="large"
               className={"text-secondary-900"}
@@ -62,7 +66,7 @@ const SlangDetailsModal = ({
             </ul>
           </div>
 
-          <div>
+          <div className="w-full">
             <Text
               variant="large"
               className={"text-secondary-900"}
@@ -77,7 +81,7 @@ const SlangDetailsModal = ({
               ))}
             </div>
           </div>
-          <div className="flex space-x-6">
+          <div className="flex space-x-6 w-full">
             <div className="flex space-x-1 items-end">
               <IcomoonIcon icon="thumb-up" size={"20"} />
               <Text variant="" className={"text-sm"}>

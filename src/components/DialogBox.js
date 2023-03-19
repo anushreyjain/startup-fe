@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
+import useClickOutside from "./ClickOutside";
 import IcomoonIcon from "./IcomoonIcon";
 
 export default function DialogBox({
@@ -8,11 +9,11 @@ export default function DialogBox({
   alwaysOpen,
   height,
   width,
-  close,
+  closeModal,
   ...property
 }) {
-  // const dialogRef = useRef(null);
-  // if (!alwaysOpen) useClickOutside(dialogRef, () => close());
+  const dialogRef = useRef(null);
+  useClickOutside(dialogRef, () => closeModal());
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => (document.body.style.overflow = "visible");
@@ -31,7 +32,7 @@ export default function DialogBox({
         ></div>
 
         <div
-          // ref={dialogRef}
+          ref={dialogRef}
           className={`inline-block ${width} max-h-[500px] md:max-h-max px-4 py-6 md:pb-11 md:p-11 flex-1 bg-primary-300 text-left shadow-xl transform transition-all md:rounded rounded-t-lg md:rounded-t overflow-auto  md:overflow-hidden`}
         >
           <div className={`${property.className}`}>{children}</div>

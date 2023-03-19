@@ -47,6 +47,14 @@ const Card = ({
     }
   };
 
+  const handleEdit = () => {
+    console.log("edit");
+  };
+
+  const handleDelete = () => {
+    console.log("deleted");
+  };
+
   return (
     <div className="p-4 w-full justify-self-center min-h-[150px] group flex flex-col rounded bg-white hover:drop-shadow-sm active:scale-95 transform transition-all">
       <div className="flex-grow">
@@ -76,13 +84,13 @@ const Card = ({
           </Text>
         </div>
       </div>
-      <div className="flex mt-3 justify-between items-center w-fit">
+      <div className="flex mt-3 justify-between items-center w-full ">
         <div
           className="flex-shrink-0 flex space-x-1 items-center cursor-pointer"
           onClick={handleLike}
         >
           <IcomoonIcon icon={"thumb-up-outline"} size="20" />
-          <Text variant="" className={"text-xs"}>
+          <Text variant="" className={"text-sm"} fontWeight="font-medium">
             {likes}
           </Text>
         </div>
@@ -92,13 +100,15 @@ const Card = ({
               <IcomoonIcon
                 icon={"pencil-square"}
                 size="20"
-                className="lg:hidden group-hover:block"
+                className="lg:hidden group-hover:block cursor-pointer"
+                onClick={handleEdit}
               />
               <IcomoonIcon
                 icon={"trash"}
                 size="20"
                 color={"red"}
-                className="lg:hidden group-hover:block"
+                className="lg:hidden group-hover:block cursor-pointer"
+                onClick={handleDelete}
               />
             </>
           )}
