@@ -3,9 +3,10 @@ import debounce from "../functions/debounce";
 import CardsLayout from "../organism/CardsLayout";
 import Header from "../organism/Header";
 import { Triangle } from "react-loader-spinner";
+import { getFromPublic } from "../utils/public.api";
+import SlangDetailsModal from "../organism/SlangDetailsModal";
 const Dashboard = ({ user }) => {
   const [activeTab, setActiveTab] = useState("everything");
-  console.log(activeTab);
 
   const tabs = {
     home: [
@@ -17,7 +18,7 @@ const Dashboard = ({ user }) => {
       {
         id: 2,
         title: "Trending",
-        value: "Trending",
+        value: "trending",
       },
     ],
     user: [
@@ -29,7 +30,7 @@ const Dashboard = ({ user }) => {
       {
         id: 2,
         title: "Trending",
-        value: "Trending",
+        value: "trending",
       },
       {
         id: 3,
@@ -56,7 +57,7 @@ const Dashboard = ({ user }) => {
       {
         id: 2,
         title: "Trending",
-        value: "Trending",
+        value: "trending",
       },
       {
         id: 3,
@@ -100,6 +101,39 @@ const Dashboard = ({ user }) => {
 
   const tabHandler = (value) => {
     setActiveTab(value);
+    if (value === "trending") {
+      getFromPublic({
+        query: "getEverything",
+        fields: ["_id", "title", "description", "likes"],
+        variables: {},
+      })
+        .then((res) => {
+          if (res.error) {
+            throw new Error(res.error);
+          }
+          setAllSlangs(res);
+        })
+        .catch((err) => {
+          console.log("caught an error: ", err.message);
+        });
+    }
+
+    if (value === "everything") {
+      getFromPublic({
+        query: "getEverything",
+        fields: ["_id", "title", "description", "likes"],
+        variables: {},
+      })
+        .then((res) => {
+          if (res.error) {
+            throw new Error(res.error);
+          }
+          setAllSlangs(res);
+        })
+        .catch((err) => {
+          console.log("caught an error: ", err.message);
+        });
+    }
   };
 
   const slangOfTheDay = {
@@ -107,257 +141,24 @@ const Dashboard = ({ user }) => {
       "qSUQH NDAWIDJWAOID AWN DAWIDWAN DNAW  nfise nf dj isedj ise jies jfois jfioesjfiojo",
   };
 
-  const slangDetails = [
-    {
-      id: 1,
-      title: "Teri bai ki baarat",
-      description:
-        "Iska matlab hai teri mummy ki baarat, doosri shadi ki baarat ",
-      status: null,
-      likeCount: "123",
-    },
-    {
-      id: 2,
-      title: "Teri bai ki baarat",
-      description:
-        "Iska matlab hai teri mummy ki baarat, doosri shadi ki baarat,Iska matlab hai teri mummy ki baarat, doosri shadi ki baarat ",
-      status: "pending",
-      likeCount: "123",
-    },
-    {
-      id: 3,
-      title: "Teri bai ki baarat",
-      description:
-        "Iska matlab hai teri mummy ki baarat, doosri shadi ki baarat ",
-      status: "approved",
-      likeCount: "123",
-    },
-    {
-      title: "Teri bai ki baarat",
-      description:
-        "Iska matlab hai teri mummy ki baarat, doosri shadi ki baarat ",
-      status: "approved",
-      likeCount: "123",
-    },
-    {
-      title: "Teri bai ki baarat",
-      description:
-        "Iska matlab hai teri mummy ki baarat, doosri shadi ki baarat ",
-      status: "",
-      likeCount: "123",
-    },
-    {
-      title: "Teri bai ki baarat",
-      description:
-        "Iska matlab hai teri mummy ki baarat, doosri shadi ki baarat ",
-      status: "",
-      likeCount: "123",
-    },
-    {
-      title: "Teri bai ki baarat",
-      description:
-        "Iska matlab hai teri mummy ki baarat, doosri shadi ki baarat ",
-      status: "",
-      likeCount: "123",
-    },
-    {
-      title: "Teri bai ki baarat",
-      description:
-        "Iska matlab hai teri mummy ki baarat, doosri shadi ki baarat ",
-      status: "",
-      likeCount: "123",
-    },
-    {
-      title: "Teri bai ki baarat",
-      description:
-        "Iska matlab hai teri mummy ki baarat, doosri shadi ki baarat ",
-      status: "",
-      likeCount: "123",
-    },
-    {
-      title: "Teri bai ki baarat",
-      description:
-        "Iska matlab hai teri mummy ki baarat, doosri shadi ki baarat ",
-      status: "",
-      likeCount: "123",
-    },
-    {
-      title: "Teri bai ki baarat",
-      description:
-        "Iska matlab hai teri mummy ki baarat, doosri shadi ki baarat ",
-      status: "",
-      likeCount: "123",
-    },
-    {
-      title: "Teri bai ki baarat",
-      description:
-        "Iska matlab hai teri mummy ki baarat, doosri shadi ki baarat ",
-      status: "",
-      likeCount: "123",
-    },
-    {
-      title: "Teri bai ki baarat",
-      description:
-        "Iska matlab hai teri mummy ki baarat, doosri shadi ki baarat ",
-      status: "",
-      likeCount: "123",
-    },
-    {
-      title: "Teri bai ki baarat",
-      description:
-        "Iska matlab hai teri mummy ki baarat, doosri shadi ki baarat ",
-      status: "",
-      likeCount: "123",
-    },
-    {
-      title: "Teri bai ki baarat",
-      description:
-        "Iska matlab hai teri mummy ki baarat, doosri shadi ki baarat ",
-      status: "",
-      likeCount: "123",
-    },
-    {
-      title: "Teri bai ki baarat",
-      description:
-        "Iska matlab hai teri mummy ki baarat, doosri shadi ki baarat ",
-      status: "",
-      likeCount: "123",
-    },
-    {
-      title: "Teri bai ki baarat",
-      description:
-        "Iska matlab hai teri mummy ki baarat, doosri shadi ki baarat ",
-      status: "",
-      likeCount: "123",
-    },
-    {
-      title: "Teri bai ki baarat",
-      description:
-        "Iska matlab hai teri mummy ki baarat, doosri shadi ki baarat ",
-      status: "",
-      likeCount: "123",
-    },
-    {
-      title: "Teri bai ki baarat",
-      description:
-        "Iska matlab hai teri mummy ki baarat, doosri shadi ki baarat ",
-      status: "",
-      likeCount: "123",
-    },
-    {
-      title: "Teri bai ki baarat",
-      description:
-        "Iska matlab hai teri mummy ki baarat, doosri shadi ki baarat ",
-      status: "",
-      likeCount: "123",
-    },
-    {
-      title: "Teri bai ki baarat",
-      description:
-        "Iska matlab hai teri mummy ki baarat, doosri shadi ki baarat ",
-      status: "",
-      likeCount: "123",
-    },
-    {
-      title: "Teri bai ki baarat",
-      description:
-        "Iska matlab hai teri mummy ki baarat, doosri shadi ki baarat ",
-      status: "",
-      likeCount: "123",
-    },
-    {
-      title: "Teri bai ki baarat",
-      description:
-        "Iska matlab hai teri mummy ki baarat, doosri shadi ki baarat ",
-      status: "",
-      likeCount: "123",
-    },
-    {
-      title: "Teri bai ki baarat",
-      description:
-        "Iska matlab hai teri mummy ki baarat, doosri shadi ki baarat ",
-      status: "",
-      likeCount: "123",
-    },
-    {
-      title: "Teri bai ki baarat",
-      description:
-        "Iska matlab hai teri mummy ki baarat, doosri shadi ki baarat ",
-      status: "",
-      likeCount: "123",
-    },
-    {
-      title: "Teri bai ki baarat",
-      description:
-        "Iska matlab hai teri mummy ki baarat, doosri shadi ki baarat ",
-      status: "",
-      likeCount: "123",
-    },
-    {
-      title: "Teri bai ki baarat",
-      description:
-        "Iska matlab hai teri mummy ki baarat, doosri shadi ki baarat ",
-      status: "",
-      likeCount: "123",
-    },
-    {
-      title: "Teri bai ki baarat",
-      description:
-        "Iska matlab hai teri mummy ki baarat, doosri shadi ki baarat ",
-      status: "",
-      likeCount: "123",
-    },
-    {
-      title: "Teri bai ki baarat",
-      description:
-        "Iska matlab hai teri mummy ki baarat, doosri shadi ki baarat ",
-      status: "",
-      likeCount: "123",
-    },
-    {
-      title: "Teri bai ki baarat",
-      description:
-        "Iska matlab hai teri mummy ki baarat, doosri shadi ki baarat ",
-      status: "",
-      likeCount: "123",
-    },
-    {
-      title: "Teri bai ki baarat",
-      description:
-        "Iska matlab hai teri mummy ki baarat, doosri shadi ki baarat ",
-      status: "",
-      likeCount: "123",
-    },
-    {
-      title: "Teri bai ki baarat",
-      description:
-        "Iska matlab hai teri mummy ki baarat, doosri shadi ki baarat ",
-      status: "",
-      likeCount: "123",
-    },
-    {
-      title: "Teri bai ki baarat",
-      description:
-        "Iska matlab hai teri mummy ki baarat, doosri shadi ki baarat ",
-      status: "",
-      likeCount: "123",
-    },
-  ];
+  const [allSlangs, setAllSlangs] = useState([]);
 
-  //get dynamic header height
-  // const headerRef = useRef();
-  // const [height, setHeight] = useState(0);
-  // function getClientHeight() {
-  //   const finalHeight = headerRef.current?.clientHeight;
-  //   console.log(finalHeight);
-  //   setHeight(finalHeight.toString());
-  // }
-
-  // useEffect(() => {
-  //   console.log(headerRef.current.clientHeight);
-  //   setHeight(headerRef.current?.clientHeight.toString());
-  //   window.addEventListener("resize", getClientHeight);
-  // }, []);
+  useEffect(() => {
+    getFromPublic({
+      query: "getEverything",
+      fields: ["_id", "title", "description", "likes"],
+      variables: {},
+    })
+      .then((res) => {
+        if (res.error) {
+          throw new Error(res.error);
+        }
+        setAllSlangs(res);
+      })
+      .catch((err) => {
+        console.log("caught an error: ", err.message);
+      });
+  }, []);
 
   return (
     <div>
@@ -369,7 +170,11 @@ const Dashboard = ({ user }) => {
         user={user}
       />
 
-      <CardsLayout isAdmin={isAdmin} activeTab={activeTab} slangDetails={slangDetails} />
+      <CardsLayout
+        isAdmin={isAdmin}
+        activeTab={activeTab}
+        slangDetails={allSlangs}
+      />
     </div>
   );
 };

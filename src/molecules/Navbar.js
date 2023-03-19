@@ -10,6 +10,8 @@ const Navbar = ({ slangOfTheDay, user }) => {
 
   async function signOut() {
     try {
+      localStorage.setItem("authToken", null);
+      localStorage.setItem("username", null);
       await Auth.signOut();
       navigate("/", { replace: true });
     } catch (error) {

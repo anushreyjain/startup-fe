@@ -7,16 +7,10 @@ const SlangDetailsModal = ({
   height = "max-h-[600px] md:max-h-fit",
   width = "min-w-screen",
   closeHandler,
-  ratingMessage,
-  handleCourseFeedback,
-  handleSubmit,
-  handleCourseFeedbackSubmit,
-  saveCourseFeedback,
-  watch,
-  setValue,
+  details,
   ...property
 }) => {
-
+  console.log("lwde", details);
   return (
     <div className={`${property.className}`} {...property}>
       <DialogBox
@@ -36,10 +30,7 @@ const SlangDetailsModal = ({
             >
               Title
             </Text>
-            <Text className={"text-black"}>
-              This is a slang title, awdhaw hdi auwhduihwa iudh iauwhd uah
-              diuhwa uidhaiu hdiu wah
-            </Text>
+            <Text className={"text-black"}>{details.title}</Text>
           </div>
           <div>
             <Text
@@ -50,10 +41,7 @@ const SlangDetailsModal = ({
             >
               Meaning/Description
             </Text>
-            <Text className={"text-black"}>
-              This is a slang title, awdhaw hdi auwhduihwa iudh iauwhd uah
-              diuhwa uidhaiu hdiu wah
-            </Text>
+            <Text className={"text-black"}>{details.description}</Text>
           </div>
           <div>
             <Text
@@ -66,19 +54,12 @@ const SlangDetailsModal = ({
             </Text>
 
             <ul className="list-disc list-inside text-black text-sm md:text-base">
-              <li>
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry.
-              </li>
-              <li>
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry.
-              </li>
-              <li>
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry.
-              </li>
-            </ul>   
+              {details?.usage?.map((usage) => (
+                <>
+                  <li>{usage}</li>
+                </>
+              ))}
+            </ul>
           </div>
 
           <div>
@@ -91,15 +72,16 @@ const SlangDetailsModal = ({
               Additional Info
             </Text>
             <div className="flex items-center space-x-3  mt-1">
-              <Badge>Delhi</Badge>
-              <Badge>Hindi</Badge>
+              {details?.additionalInfo?.map((info) => (
+                <Badge>{info}</Badge>
+              ))}
             </div>
           </div>
           <div className="flex space-x-6">
             <div className="flex space-x-1 items-end">
               <IcomoonIcon icon="thumb-up" size={"20"} />
               <Text variant="" className={"text-sm"}>
-                123
+                {details.likes}
               </Text>
             </div>
             <IcomoonIcon icon={"bookmark"} size="20" />
