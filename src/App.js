@@ -70,7 +70,6 @@ const App = () => {
         <Route path="/" element={<Dashboard user={user} />} />
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard user={user} />} />
-        <Route path="/pageNotFound" element={<Template404  />} />
       </Routes>
       {/* <SlangDetailsModal /> */}
       {/* <SlangModal options={options} /> */}
