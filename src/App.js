@@ -13,6 +13,7 @@ import Dashboard from "./templates/Dashboard";
 import { Auth } from "aws-amplify";
 import Login from "./templates/Login";
 import { getFromPublic } from "./utils/public.api";
+import Template404 from "./templates/Template404";
 
 const App = () => {
   const options = [
@@ -69,6 +70,7 @@ const App = () => {
         <Route path="/" element={<Dashboard user={user} />} />
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard user={user} />} />
+        <Route path="/pageNotFound" element={<Template404  />} />
       </Routes>
       {/* <SlangDetailsModal /> */}
       {/* <SlangModal options={options} /> */}
