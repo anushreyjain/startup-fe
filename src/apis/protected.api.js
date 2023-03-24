@@ -34,7 +34,7 @@ export const postToProtected = async (options) => {
   };
 
   const response = await axiosInstance.post(
-    '/public',
+    '/protected',
     {
       params: {
         query: `mutation Mutation {

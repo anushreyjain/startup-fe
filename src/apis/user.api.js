@@ -1,4 +1,4 @@
-import  { axiosInstance } from '../utils/axios.util';
+import { axiosInstance } from '../utils/axios.util';
 import { getProcessedVariables } from '../utils/common.util'
 
 // export const getFromUser = async (options) => {
@@ -29,25 +29,24 @@ import { getProcessedVariables } from '../utils/common.util'
 
 export const postToUser = async (options) => {
   const resolvers = {
-    getEverything: `getEverything`,
-    getSlang: `getSlang(${getProcessedVariables(options.variables)})`
+    createUpdateUser: `createUpdateUser`,
   };
 
   const response = await axiosInstance.post(
-    '/public',
+    '/user',
     {
-      params: {
-        query: `query Query {
+      query: `query Mutation {
           ${resolvers[options.query]} {
             ${options.fields.join(' ')}
           }
         }`,
-        variables: options.variables
+      variables: {
+        data: options.data
       }
     }
   );
 
-  if(response.data.errors) {
+  if (response.data.errors) {
     return { error: response.data.errors[0].message }
   }
 
