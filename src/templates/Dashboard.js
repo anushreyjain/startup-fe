@@ -3,7 +3,7 @@ import debounce from "../functions/debounce";
 import CardsLayout from "../organism/CardsLayout";
 import Header from "../organism/Header";
 import { Triangle } from "react-loader-spinner";
-import { getFromPublic } from "../utils/public.api";
+import { getFromPublic } from "../apis/public.api";
 import SlangDetailsModal from "../organism/SlangDetailsModal";
 const Dashboard = ({ user }) => {
   const [activeTab, setActiveTab] = useState("everything");

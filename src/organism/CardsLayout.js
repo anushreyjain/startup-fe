@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Text from "../atoms/Text";
 import IcomoonIcon from "../components/IcomoonIcon";
 import Card from "../molecules/Card";
-import { getFromPublic } from "../utils/public.api";
+import { getFromPublic } from "../apis/public.api";
 import SlangDetailsModal from "./SlangDetailsModal";
 import SlangModal from "./SlangModal";
 

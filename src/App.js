@@ -12,7 +12,7 @@ import SlangModal from "./organism/SlangModal";
 import Dashboard from "./templates/Dashboard";
 import { Auth } from "aws-amplify";
 import Login from "./templates/Login";
-import { getFromPublic } from "./utils/public.api";
+import { getFromPublic } from "./apis/public.api";
 import Template404 from "./templates/Template404";
 
 const App = () => {
