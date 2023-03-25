@@ -1,10 +1,13 @@
-import  { axiosInstance } from '../utils/axios.util';
+import { axiosInstance } from '../utils/axios.util';
 import { getProcessedVariables } from '../utils/common.util'
 
 export const getFromProtected = async (options) => {
   const resolvers = {
-    getEverything: `getEverything`,
-    getSlang: `getSlang(${getProcessedVariables(options.variables)})`
+    deleteSlang: `deleteSlang(${getProcessedVariables(options.variables)})`,
+    likeSlang: `likeSlang(${getProcessedVariables(options.variables)})`,
+    bookmarkSlang: `bookmarkSlang(${getProcessedVariables(options.variables)})`,
+    getSavedSlangs: `getSavedSlangs`,
+    getUserSlangs: `getUserSlangs`,
   }
   const response = await axiosInstance.get(
     '/protected',
@@ -20,7 +23,7 @@ export const getFromProtected = async (options) => {
     }
   );
 
-  if(response.data.errors) {
+  if (response.data.errors) {
     return { error: response.data.errors[0].message }
   }
 
@@ -29,25 +32,23 @@ export const getFromProtected = async (options) => {
 
 export const postToProtected = async (options) => {
   const resolvers = {
-    getEverything: `getEverything`,
-    getSlang: `getSlang(${getProcessedVariables(options.variables)})`
+    createSlang: `createSlang`,
+    updateSlang: `updateSlang`
   };
 
   const response = await axiosInstance.post(
     '/protected',
     {
-      params: {
-        query: `mutation Mutation {
-          ${resolvers[options.query]} {
-            ${options.fields.join(' ')}
-          }
-        }`,
-        variables: options.variables
-      }
+      query: `mutation Mutation {
+        ${resolvers[options.query]} {
+          ${options.fields.join(' ')}
+        }
+      }`,
+      variables: options.data
     }
   );
 
-  if(response.data.errors) {
+  if (response.data.errors) {
     return { error: response.data.errors[0].message }
   }
 
