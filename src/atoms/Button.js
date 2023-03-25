@@ -11,13 +11,14 @@ const Button = ({
   iconUrl,
   iconPosition,
   iconSize,
-  type = "text",
+  variant,
   iconView,
   size,
   textSize,
   iconColor,
   iconSpace,
   iconFlexibleSize,
+  typeButton,
   ...property
 }) => {
   const buttonType = {
@@ -32,10 +33,11 @@ const Button = ({
 
   return (
     <button
-      type={buttonType[type]}
-      className={`${property.className} ${buttonStyle[type]} ${buttonSize[size]}`}
+      variant={buttonType[variant]}
+      className={`${property.className} ${buttonStyle[variant]} ${buttonSize[size]}`}
       onClick={onClick}
       disabled={isDisable}
+      type={typeButton}
     >
       <div
         className={`flex active:scale-105 justify-center items-center ${

@@ -6,6 +6,10 @@ import InputWithLabel from "../molecules/InputWithLabel";
 import Dropdown from "../molecules/Dropdown";
 import AddRemoveInputField from "./AddRemoveInputFields";
 import IcomoonIcon from "../components/IcomoonIcon";
+import { useFormik, FormikProvider, Form, useField } from "formik";
+import * as Yup from "yup";
+import TextInput from "../molecules/TextInput";
+import TextareaInput from "../molecules/TextareaInput";
 
 const SlangDetailsModal = ({
   height = "max-h-[600px] md:max-h-fit",
@@ -14,6 +18,30 @@ const SlangDetailsModal = ({
   options,
   ...property
 }) => {
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+  const formik = useFormik({
+    initialValues: {
+      title: "",
+      description: "",
+      example:''
+    },
+    onSubmit: async (values) => {
+      await sleep(500);
+      alert(JSON.stringify(values, null, 2));
+    },
+    validationSchema: Yup.object({
+      title: Yup.string()
+        .min(5, "Must be at least 5 characters")
+        .required("Title is required")
+        .matches(/^[a-zA-Z0-9]/, "Cannot contain special characters or spaces"),
+
+      description: Yup.string()
+        .min(8, "Must be at least 8 characters")
+        .required("Description is required")
+        .matches(/^[a-zA-Z0-9]/, "Cannot contain special characters or spaces"),
+    }),
+  });
   return (
     <div className={`${property.className}`} {...property}>
       <DialogBox
@@ -39,7 +67,39 @@ const SlangDetailsModal = ({
             </div>
           </div>
 
-          <InputWithLabel
+          <FormikProvider value={formik}>
+            <Form className="w-full flex flex-col space-y-8">
+              <TextInput
+                label="Title"
+                id="title"
+                name="title"
+                helpText="Must be 8-20 characters and cannot contain special characters."
+                type="text"
+                fontClass="text-secondary-900"
+                placeholder="Enter slang title"
+              />
+              <TextareaInput
+                label="Meaning/Description"
+                id="description"
+                name="description"
+                helpText="Must be 8-20 characters and cannot contain special characters."
+                fontClass="text-secondary-900"
+                placeholder="Enter slang description"
+              />
+              {/* <AddRemoveInputField id="example" name="example" /> */}
+              <div className="mt-8">
+                <Button
+                  typeButton="submit"
+                  variant="contained"
+                  size={"default"}
+                >
+                  Submit
+                </Button>
+              </div>
+            </Form>
+          </FormikProvider>
+
+          {/* <InputWithLabel
             label={"Title"}
             type="text"
             placeholder={"Enter title"}
@@ -71,7 +131,7 @@ const SlangDetailsModal = ({
 
           <Button type="contained" size={"default"}>
             Submit
-          </Button>
+          </Button> */}
         </div>
       </DialogBox>
     </div>

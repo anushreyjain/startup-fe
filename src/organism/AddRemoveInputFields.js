@@ -1,6 +1,14 @@
 import { useState } from "react";
+import { useField } from "formik";
 import IcomoonIcon from "../components/IcomoonIcon";
-function AddRemoveInputField() {
+
+function AddRemoveInputField({ label, helpText, fontClass, type, ...props }) {
+  const [field, meta] = useField(props);
+  console.log(field);
+  const [didFocus, setDidFocus] = useState(false);
+  const handleFocus = () => setDidFocus(true);
+  const showFeedback =
+    (!!didFocus && field.value?.trim().length > 2) || meta.touched;
   const [inputFields, setInputFields] = useState([
     {
       fullName: "",
@@ -38,7 +46,11 @@ function AddRemoveInputField() {
                   type="text"
                   onChange={(evnt) => handleChange(index, evnt)}
                   value={fullName}
-                  name="fullName"
+                  name={`fullName`}
+                  {...props}
+                  {...field}
+                  aria-describedby={`${props.id}-feedback ${props.id}-help`}
+                  onFocus={handleFocus}
                   className="w-full px-4 text-sm md:text-base py-2 outline-none bg-black-secondary rounded border border-white
              focus:border-primary-900 placeholder:text-neutral-400"
                   placeholder="Enter example"

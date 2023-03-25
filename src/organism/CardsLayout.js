@@ -48,7 +48,7 @@ const CardsLayout = ({ slangDetails, activeTab, isAdmin, ...property }) => {
 
   return (
     <>
-      {newSlang && <SlangModal closeModal={closeModal} />}
+      {newSlang && <SlangModal  closeModal={closeModal} />}
       {details && (
         <SlangDetailsModal closeModal={closeModal} details={details} />
       )}
