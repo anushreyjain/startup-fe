@@ -46,9 +46,40 @@ const CardsLayout = ({ slangDetails, activeTab, isAdmin, ...property }) => {
     setNewSlang(false);
   };
 
+  const options = [
+    { value: "Agriculture", label: "Agriculture" },
+    { value: "Agriculture & Forestry", label: "Agriculture & Forestry" },
+    {
+      value: "Carbon fixation and abatement",
+      label: "Carbon fixation and abatement",
+    },
+    { value: "Coastal Zones", label: "Coastal Zones" },
+    {
+      value: "Cross-sectoral Enablers & Approaches",
+      label: "Cross-sectoral Enablers & Approaches",
+    },
+    {
+      value: "Early Warning and Environmental Assessment",
+      label: "Early Warning and Environmental Assessment",
+    },
+    { value: "Energy Efficiency", label: "Energy Efficiency" },
+    { value: "Forestry", label: "Forestry" },
+    { value: "Human Health", label: "Human Health" },
+    { value: "Industry", label: "Industry" },
+    {
+      value: "Infrastructure & Urban Planning",
+      label: "Infrastructure & Urban Planning",
+    },
+    { value: "Marine & Fisheries", label: "Marine & Fisheries" },
+    { value: "Renewable Energy", label: "Renewable Energy" },
+    { value: "Transport", label: "Transport" },
+    { value: "Waste Management", label: "Waste Management" },
+    { value: "Water", label: "Water" },
+  ];
+
   return (
     <>
-      {newSlang && <SlangModal closeModal={closeModal} />}
+      {newSlang && <SlangModal options={options} closeModal={closeModal} />}
       {details && (
         <SlangDetailsModal closeModal={closeModal} details={details} />
       )}

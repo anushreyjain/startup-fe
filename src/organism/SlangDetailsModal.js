@@ -18,6 +18,7 @@ const SlangDetailsModal = ({
         closeModal={closeModal}
         isDisable={true}
         zIndex="z-50"
+        width={"min-w-[50vw]"}
       >
         <div className="flex w-full flex-col items-start space-y-4 md:space-y-8">
           <div className="w-full">
@@ -31,7 +32,7 @@ const SlangDetailsModal = ({
                 Title
               </Text>
               <div className="cursor-pointer">
-                <IcomoonIcon icon={"close"} size="25" onClick={closeModal} />
+                <IcomoonIcon icon={"close"} size="30" onClick={closeModal} />
               </div>
             </div>
             <Text className={"text-black"}>{details.title}</Text>

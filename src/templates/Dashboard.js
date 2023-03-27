@@ -112,6 +112,7 @@ const Dashboard = ({ user }) => {
             throw new Error(res.error);
           }
           setAllSlangs(res);
+       
         })
         .catch((err) => {
           console.log("caught an error: ", err.message);
