@@ -126,7 +126,7 @@ const Dashboard = ({ user }) => {
           console.log(res);
           setAllSlangs(res);
           break;
-          
+
 
         case "my-creativity":
           res = await getFromProtected({

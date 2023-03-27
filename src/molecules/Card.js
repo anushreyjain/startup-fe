@@ -101,7 +101,7 @@ const Card = ({ activeTab, tabHandler, isAdmin, slang, openSlangHandler }) => {
           </Text>
         </div>
       </div>
-      <div className="flex mt-3 justify-between items-center w-full ">
+      <div className="flex mt-3 justify-between items-center w-full  h-6">
         <div
           className="flex-shrink-0 flex space-x-1 items-center cursor-pointer"
           onClick={() => handleLike(id)}
@@ -114,7 +114,7 @@ const Card = ({ activeTab, tabHandler, isAdmin, slang, openSlangHandler }) => {
             {likes}
           </Text>
         </div>
-        <div className="flex space-x-3">
+        <div className="flex space-x-3 items-center ">
           {isAdmin && (
             <>
               <IcomoonIcon

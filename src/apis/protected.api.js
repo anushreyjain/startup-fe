@@ -42,21 +42,23 @@ export const postToProtected = async (options) => {
       createSlang: `createSlang`,
       updateSlang: `updateSlang`,
     };
-
+    const inputTypes = {
+      createSlang: "CreateSlangInput",
+    };
     const response = await axiosInstance.post("/protected", {
-      query: `mutation Mutation {
-          ${resolvers[options.query]} {
+      query: `mutation Mutation($data:${inputTypes[options.query]}) {
+          ${resolvers[options.query]}(data:$data) {
             ${options.fields.join(" ")}
           }
         }`,
-      variables: options.data,
+      variables: options.variables,
     });
 
     if (response.data.errors) {
       return { error: response.data.errors[0].message };
     }
-
     return response.data.data[options.query];
+
   } catch (error) {
     return { error: "Something went wrong!" };
   }
