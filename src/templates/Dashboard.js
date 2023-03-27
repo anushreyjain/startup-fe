@@ -101,6 +101,8 @@ const Dashboard = ({ user }) => {
     }
   }, [isAdmin]);
 
+  const [allSlangs, setAllSlangs] = useState([]);
+
   const tabHandler = async (value) => {
     try {
       setActiveTab(value);
@@ -164,7 +166,6 @@ const Dashboard = ({ user }) => {
       "qSUQH NDAWIDJWAOID AWN DAWIDWAN DNAW  nfise nf dj isedj ise jies jfois jfioesjfiojo",
   };
 
-  const [allSlangs, setAllSlangs] = useState([]);
 
   useEffect(() => {
     getFromPublic({
@@ -183,6 +184,9 @@ const Dashboard = ({ user }) => {
       });
   }, []);
 
+
+  console.log("dashboard",tabHandler);
+
   return (
     <div>
       <Header
@@ -197,6 +201,7 @@ const Dashboard = ({ user }) => {
         isAdmin={isAdmin}
         activeTab={activeTab}
         slangDetails={allSlangs}
+        tabHandler={tabHandler}
       />
       {/* <ProfileCards /> */}
     </div>

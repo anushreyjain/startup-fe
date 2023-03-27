@@ -7,7 +7,13 @@ import SlangDetailsModal from "./SlangDetailsModal";
 import SlangModal from "./SlangModal";
 import ProfileCards from "./ProfileCards";
 
-const CardsLayout = ({ slangDetails, activeTab, isAdmin, ...property }) => {
+const CardsLayout = ({
+  slangDetails,
+  activeTab,
+  isAdmin,
+  tabHandler,
+  ...property
+}) => {
   const [details, setDetails] = useState(null);
   const [newSlang, setNewSlang] = useState(false);
   console.log(slangDetails);
@@ -76,6 +82,7 @@ const CardsLayout = ({ slangDetails, activeTab, isAdmin, ...property }) => {
 
         {slangDetails.map((slang, index) => (
           <Card
+            tabHandler={tabHandler}
             slang={slang}
             key={index}
             activeTab={activeTab}
