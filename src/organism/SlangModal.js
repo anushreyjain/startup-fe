@@ -1,8 +1,6 @@
 import Text from "../atoms/Text";
-import Textarea from "../molecules/Textarea";
 import Button from "../atoms/Button";
 import DialogBox from "../components/DialogBox";
-import InputWithLabel from "../molecules/InputWithLabel";
 import Dropdown from "../molecules/Dropdown";
 import AddRemoveInputField from "./AddRemoveInputFields";
 import IcomoonIcon from "../components/IcomoonIcon";
@@ -24,7 +22,8 @@ const SlangDetailsModal = ({
     initialValues: {
       title: "",
       description: "",
-      example:''
+      origin: "",
+      region: "",
     },
     onSubmit: async (values) => {
       await sleep(500);
@@ -78,6 +77,28 @@ const SlangDetailsModal = ({
                 fontClass="text-secondary-900"
                 placeholder="Enter slang title"
               />
+              <div className="flex lg:flex-row flex-col w-full space-y-8 lg:space-x-10 lg:space-y-0 justify-between">
+                <Dropdown
+                  id="origin"
+                  name="origin"
+                  options={options}
+                  labelText="Language Origin"
+                  value={formik.values.origin}
+                  onChange={(value) =>
+                    formik.setFieldValue("origin", value.value)
+                  }
+                />
+                <Dropdown
+                  id="region"
+                  name="region"
+                  options={options}
+                  labelText="Region it is used in"
+                  value={formik.values.region}
+                  onChange={(value) =>
+                    formik.setFieldValue("region", value.value)
+                  }
+                />
+              </div>
               <TextareaInput
                 label="Meaning/Description"
                 id="description"
