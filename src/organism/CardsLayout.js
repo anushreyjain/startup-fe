@@ -5,10 +5,18 @@ import Card from "../molecules/Card";
 import { getFromPublic } from "../apis/public.api";
 import SlangDetailsModal from "./SlangDetailsModal";
 import SlangModal from "./SlangModal";
+import ProfileCards from "./ProfileCards";
 
-const CardsLayout = ({ slangDetails, activeTab, isAdmin, ...property }) => {
+const CardsLayout = ({
+  slangDetails,
+  activeTab,
+  isAdmin,
+  tabHandler,
+  ...property
+}) => {
   const [details, setDetails] = useState(null);
   const [newSlang, setNewSlang] = useState(false);
+  console.log(slangDetails);
   const openSlangHandler = (id) => {
     getFromPublic({
       query: "getSlang",
@@ -102,14 +110,12 @@ const CardsLayout = ({ slangDetails, activeTab, isAdmin, ...property }) => {
             <IcomoonIcon icon={"plus-circle"} size={"56"} />
           </div>
         )}
+
         {slangDetails.map((slang, index) => (
           <Card
+            tabHandler={tabHandler}
+            slang={slang}
             key={index}
-            id={slang._id}
-            title={slang.title}
-            description={slang.description}
-            likes={slang.likes}
-            status={slang.status}
             activeTab={activeTab}
             isAdmin={isAdmin}
             openSlangHandler={() => {

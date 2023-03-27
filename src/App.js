@@ -14,20 +14,31 @@ import { Auth } from "aws-amplify";
 import Login from "./templates/Login";
 import { getFromPublic } from "./apis/public.api";
 import Template404 from "./templates/Template404";
+import { getFromUser } from "./apis/user.api";
 
 const App = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
-  console.log(user);
+  // console.log(user);
+
+  const setToken = async (currentUser) => {
+    localStorage.setItem(
+      "authToken",
+      currentUser.signInUserSession.idToken.jwtToken
+    );
+    localStorage.setItem("username", currentUser.username);
+  };
+
   useEffect(() => {
     Auth.currentAuthenticatedUser()
-      .then((currentUser) => {
+      .then(async (currentUser) => {
         setUser(currentUser);
-        localStorage.setItem(
-          "authToken",
-          currentUser.signInUserSession.idToken.jwtToken
-        );
-        localStorage.setItem("username", currentUser.username);
+        setToken(currentUser);
+        await getFromUser({
+          query: "createUpdateUser",
+          fields: ["_id"],
+          variables: {},
+        });
         navigate("/dashboard", { replace: true });
       })
       .catch(() => console.log("Not signed in"));

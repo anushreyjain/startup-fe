@@ -1,20 +1,21 @@
 import { Auth } from "aws-amplify";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getFromProtected } from "../apis/protected.api";
 import Text from "../atoms/Text";
 import IcomoonIcon from "../components/IcomoonIcon";
 import debounce from "../functions/debounce";
 
-const Card = ({
-  title,
-  id,
-  description,
-  likes,
-  status,
-  activeTab,
-  isAdmin,
-  openSlangHandler,
-}) => {
+const Card = ({ activeTab, tabHandler, isAdmin, slang, openSlangHandler }) => {
+  const {
+    title,
+    _id: id,
+    description,
+    likes,
+    status,
+    bookmarked,
+    liked,
+  } = slang;
   const myRef = useRef();
   const [width, setwidth] = useState("");
 
@@ -31,18 +32,32 @@ const Card = ({
 
   const handleBookmark = async () => {
     try {
-      const currentUser = await Auth.currentAuthenticatedUser();
-      console.log("bookmarked");
+      await Auth.currentAuthenticatedUser();
+      const bookmarkPost = await getFromProtected({
+        query: "bookmarkSlang",
+        fields: ["_id", "title", "description", "likes", "bookmarked", "liked"],
+        variables: { id },
+      });
+      await tabHandler(activeTab);
     } catch (error) {
       navigate("/login", { replace: true });
     }
   };
 
-  const handleLike = async () => {
+  const handleLike = async (id) => {
     try {
-      const currentUser = await Auth.currentAuthenticatedUser();
-      console.log("liked");
+      console.log(tabHandler);
+      const authUser = await Auth.currentAuthenticatedUser();
+      console.log(authUser);
+      const likedPost = await getFromProtected({
+        query: "likeSlang",
+        fields: ["_id", "title", "description", "likes", "bookmarked", "liked"],
+        variables: { id },
+      });
+      console.log(likedPost);
+      await tabHandler(activeTab);
     } catch (error) {
+      console.log(error);
       navigate("/login", { replace: true });
     }
   };
@@ -70,9 +85,11 @@ const Card = ({
           </Text>
 
           <IcomoonIcon
-            icon={"bookmark-outline"}
+            icon={bookmarked ? "bookmark" : "bookmark-outline"}
             size="20"
-            className="lg:hidden group-hover:block flex-shrink-0 cursor-pointer"
+            className={` ${
+              bookmarked ? "" : "lg:hidden group-hover:block"
+            } flex-shrink-0 cursor-pointer`}
             onClick={handleBookmark}
           />
         </div>
@@ -86,10 +103,13 @@ const Card = ({
       </div>
       <div className="flex mt-3 justify-between items-center w-full  h-6">
         <div
-          className="flex-shrink-0 flex space-x-1 items-center cursor-pointer "
-          onClick={handleLike}
+          className="flex-shrink-0 flex space-x-1 items-center cursor-pointer"
+          onClick={() => handleLike(id)}
         >
-          <IcomoonIcon icon={"thumb-up-outline"} size="20" />
+          <IcomoonIcon
+            icon={liked ? "thumb-up" : "thumb-up-outline"}
+            size="20"
+          />
           <Text variant="" className={"text-sm"} fontWeight="font-medium">
             {likes}
           </Text>

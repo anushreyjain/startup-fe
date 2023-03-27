@@ -1,8 +1,9 @@
-import { axiosInstance } from "../utils/axios.util";
+import axiosInstance from "../utils/axios.util";
 import { getProcessedVariables } from "../utils/common.util";
 
 export const getFromProtected = async (options) => {
   try {
+    console.log(options);
     const resolvers = {
       deleteSlang: `deleteSlang(${getProcessedVariables(options.variables)})`,
       likeSlang: `likeSlang(${getProcessedVariables(options.variables)})`,
@@ -11,6 +12,7 @@ export const getFromProtected = async (options) => {
       )})`,
       getSavedSlangs: `getSavedSlangs`,
       getUserSlangs: `getUserSlangs`,
+      getSubmissions: `getSubmissions`,
     };
     const response = await axiosInstance.get("/protected", {
       params: {
@@ -29,6 +31,7 @@ export const getFromProtected = async (options) => {
 
     return response.data.data[options.query];
   } catch (error) {
+    console.log(error);
     return { error: "Something went wrong!" };
   }
 };

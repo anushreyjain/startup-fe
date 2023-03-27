@@ -1,4 +1,4 @@
-import { axiosInstance } from '../utils/axios.util';
+import  axiosInstance  from '../utils/axios.util';
 import { getProcessedVariables } from '../utils/common.util'
 
 export const getFromUser = async (options) => {
@@ -8,11 +8,11 @@ export const getFromUser = async (options) => {
       deleteUser: `deleteUser(${getProcessedVariables(options.variables)})`,
     };
   
-    const response = await axiosInstance.post(
+    const response = await axiosInstance.get(
       '/user',
       {
         params: {
-          query: `query Mutation {
+          query: `query Query {
               ${resolvers[options.query]} {
                 ${options.fields.join(' ')}
               }
