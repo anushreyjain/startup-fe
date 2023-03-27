@@ -16,7 +16,6 @@ const CardsLayout = ({
 }) => {
   const [details, setDetails] = useState(null);
   const [newSlang, setNewSlang] = useState(false);
-  console.log(slangDetails);
   const openSlangHandler = (id) => {
     getFromPublic({
       query: "getSlang",
@@ -88,6 +87,7 @@ const CardsLayout = ({
   return (
     <>
       {newSlang && <SlangModal options={options} closeModal={closeModal} />}
+
       {details && (
         <SlangDetailsModal closeModal={closeModal} details={details} />
       )}

@@ -62,12 +62,26 @@ const Card = ({ activeTab, tabHandler, isAdmin, slang, openSlangHandler }) => {
     }
   };
 
-  const handleEdit = () => {
+  const handleEdit = (id) => {
     console.log("edit");
   };
 
-  const handleDelete = () => {
-    console.log("deleted");
+  const handleDelete = async (id) => {
+    try {
+      console.log(tabHandler);
+      const authUser = await Auth.currentAuthenticatedUser();
+      console.log(authUser);
+      const deletedPost = await getFromProtected({
+        query: "deleteSlang",
+        fields: ["_id"],
+        variables: { id },
+      });
+      console.log(deletedPost);
+      await tabHandler(activeTab);
+    } catch (error) {
+      console.log(error);
+      navigate("/login", { replace: true });
+    }
   };
 
   return (
@@ -83,15 +97,16 @@ const Card = ({ activeTab, tabHandler, isAdmin, slang, openSlangHandler }) => {
           >
             {title}
           </Text>
-
-          <IcomoonIcon
-            icon={bookmarked ? "bookmark" : "bookmark-outline"}
-            size="20"
-            className={` ${
-              bookmarked ? "" : "lg:hidden group-hover:block"
-            } flex-shrink-0 cursor-pointer`}
-            onClick={handleBookmark}
-          />
+          {activeTab !== "submission" && (
+            <IcomoonIcon
+              icon={bookmarked ? "bookmark" : "bookmark-outline"}
+              size="20"
+              className={` ${
+                bookmarked ? "" : "lg:hidden group-hover:block"
+              } flex-shrink-0 cursor-pointer`}
+              onClick={handleBookmark}
+            />
+          )}
         </div>
         <div ref={myRef} className="cursor-pointer" onClick={openSlangHandler}>
           <Text
@@ -102,33 +117,37 @@ const Card = ({ activeTab, tabHandler, isAdmin, slang, openSlangHandler }) => {
         </div>
       </div>
       <div className="flex mt-3 justify-between items-center w-full  h-6">
-        <div
-          className="flex-shrink-0 flex space-x-1 items-center cursor-pointer"
-          onClick={() => handleLike(id)}
-        >
-          <IcomoonIcon
-            icon={liked ? "thumb-up" : "thumb-up-outline"}
-            size="20"
-          />
-          <Text variant="" className={"text-sm"} fontWeight="font-medium">
-            {likes}
-          </Text>
-        </div>
+        {activeTab !== "submission" && (
+          <div
+            className="flex-shrink-0 flex space-x-1 items-center cursor-pointer"
+            onClick={() => handleLike(id)}
+          >
+            <IcomoonIcon
+              icon={liked ? "thumb-up" : "thumb-up-outline"}
+              size="20"
+            />
+            <Text variant="" className={"text-sm"} fontWeight="font-medium">
+              {likes}
+            </Text>
+          </div>
+        )}
         <div className="flex space-x-3 items-center ">
           {isAdmin && (
             <>
-              <IcomoonIcon
-                icon={"pencil-square"}
-                size="20"
-                className="lg:hidden group-hover:block cursor-pointer"
-                onClick={handleEdit}
-              />
+              {activeTab !== "submission" && (
+                <IcomoonIcon
+                  icon={"pencil-square"}
+                  size="20"
+                  className="lg:hidden group-hover:block cursor-pointer"
+                  onClick={() => handleEdit(id)}
+                />
+              )}
               <IcomoonIcon
                 icon={"trash"}
                 size="20"
                 color={"red"}
                 className="lg:hidden group-hover:block cursor-pointer"
-                onClick={handleDelete}
+                onClick={() => handleDelete(id)}
               />
             </>
           )}
