@@ -5,6 +5,8 @@ import Header from "../organism/Header";
 import { Triangle } from "react-loader-spinner";
 import { getFromPublic } from "../apis/public.api";
 import SlangDetailsModal from "../organism/SlangDetailsModal";
+import { getFromProtected } from "../apis/protected.api";
+import ProfileCards from "../organism/ProfileCards";
 const Dashboard = ({ user }) => {
   const [activeTab, setActiveTab] = useState("everything");
 
@@ -99,40 +101,61 @@ const Dashboard = ({ user }) => {
     }
   }, [isAdmin]);
 
-  const tabHandler = (value) => {
-    setActiveTab(value);
-    if (value === "trending") {
-      getFromPublic({
-        query: "getEverything",
-        fields: ["_id", "title", "description", "likes"],
-        variables: {},
-      })
-        .then((res) => {
-          if (res.error) {
-            throw new Error(res.error);
-          }
+  const tabHandler = async (value) => {
+    try {
+      setActiveTab(value);
+      let res;
+      switch (value) {
+        case "trending":
+          res = await getFromPublic({
+            query: "getTrending",
+            fields: ["_id", "title", "description", "likes","bookmarked" , "liked"],
+            variables: {},
+          });
           setAllSlangs(res);
-        })
-        .catch((err) => {
-          console.log("caught an error: ", err.message);
-        });
-    }
+          break;
 
-    if (value === "everything") {
-      getFromPublic({
-        query: "getEverything",
-        fields: ["_id", "title", "description", "likes"],
-        variables: {},
-      })
-        .then((res) => {
-          if (res.error) {
-            throw new Error(res.error);
-          }
+        case "everything":
+          res = await getFromPublic({
+            query: "getEverything",
+            fields: ["_id", "title", "description", "likes", "bookmarked" , "liked"],
+            variables: {},
+          });
+          console.log(res);
           setAllSlangs(res);
-        })
-        .catch((err) => {
-          console.log("caught an error: ", err.message);
-        });
+          break;
+
+        case "my-creativity":
+          res = await getFromProtected({
+            query: "getUserSlangs",
+            fields: ["_id", "title", "description", "likes", "bookmarked" , "liked"],
+            variables: {},
+          });
+          setAllSlangs(res);
+          break;
+
+        case "saved":
+          res = await getFromProtected({
+            query: "getSavedSlangs",
+            fields: ["_id", "title", "description", "likes","bookmarked" , "liked"],
+            variables: {},
+          });
+          setAllSlangs(res);
+          break;
+
+        case "submission":
+          res = await getFromProtected({
+            query: "getSubmissions",
+            fields: ["_id", "title", "description", "likes"],
+            variables: {},
+          });
+          setAllSlangs(res);
+          break;
+        default:
+          break;
+      }
+    } catch (error) {
+      console.log("caught an error: ", error.message);
     }
   };
 
@@ -146,7 +169,7 @@ const Dashboard = ({ user }) => {
   useEffect(() => {
     getFromPublic({
       query: "getEverything",
-      fields: ["_id", "title", "description", "likes"],
+      fields: ["_id", "title", "description", "likes","bookmarked" , "liked"],
       variables: {},
     })
       .then((res) => {
@@ -175,6 +198,7 @@ const Dashboard = ({ user }) => {
         activeTab={activeTab}
         slangDetails={allSlangs}
       />
+      {/* <ProfileCards /> */}
     </div>
   );
 };

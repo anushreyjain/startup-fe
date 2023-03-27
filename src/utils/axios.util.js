@@ -1,10 +1,20 @@
 import axios from "axios";
 
-export const axiosInstance = axios.create({
+const axiosInstance = axios.create({
   baseURL: 'https://vast-cyan-hermit-crab-hat.cyclic.app',
-  headers: {
-    'Content-Type': 'application/json',
-    'Apollo-Require-Preflight': 'true',
-    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-  }
 })
+
+axiosInstance.interceptors.request.use(
+    (request) => {
+        let authToken = localStorage.getItem('authToken');
+        request.headers['Content-Type'] = 'application/json';
+        request.headers['Authorization'] = authToken;
+        request.headers['Apollo-Require-Preflight'] = 'true';
+        return request;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
+
+export default axiosInstance;

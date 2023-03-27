@@ -1,4 +1,4 @@
-import { axiosInstance } from "../utils/axios.util";
+import  axiosInstance  from "../utils/axios.util";
 import { getProcessedVariables } from '../utils/common.util'
 
 export const getFromPublic = async (options) => {
@@ -28,6 +28,7 @@ export const getFromPublic = async (options) => {
   
     return response.data.data[options.query];
   } catch (error) {
+    console.log(error);
     return { error: 'Something went wrong!' }
   }
 }

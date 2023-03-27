@@ -1,20 +1,21 @@
 import { Auth } from "aws-amplify";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getFromProtected } from "../apis/protected.api";
 import Text from "../atoms/Text";
 import IcomoonIcon from "../components/IcomoonIcon";
 import debounce from "../functions/debounce";
 
-const Card = ({
-  title,
-  id,
-  description,
-  likes,
-  status,
-  activeTab,
-  isAdmin,
-  openSlangHandler,
-}) => {
+const Card = ({ activeTab, isAdmin, slang, openSlangHandler }) => {
+  const {
+    title,
+    _id: id,
+    description,
+    likes,
+    status,
+    bookmarked,
+    liked,
+  } = slang;
   const myRef = useRef();
   const [width, setwidth] = useState("");
 
@@ -29,19 +30,20 @@ const Card = ({
 
   const navigate = useNavigate();
 
+  const [bookmarkIcon, setBookmarkIcon] = useState(bookmarked);
+
+  console.log("bookMarked", bookmarked);
+  console.log("booknarkIcon", bookmarkIcon);
+
   const handleBookmark = async () => {
     try {
-      const currentUser = await Auth.currentAuthenticatedUser();
-      console.log("bookmarked");
-    } catch (error) {
-      navigate("/login", { replace: true });
-    }
-  };
-
-  const handleLike = async () => {
-    try {
-      const currentUser = await Auth.currentAuthenticatedUser();
-      console.log("liked");
+      setBookmarkIcon(!bookmarkIcon);
+      await Auth.currentAuthenticatedUser();
+      const bookmarkPost = await getFromProtected({
+        query: "bookmarkSlang",
+        fields: ["_id", "title", "description", "likes", "bookmarked", "liked"],
+        variables: { id },
+      });
     } catch (error) {
       navigate("/login", { replace: true });
     }
@@ -53,6 +55,28 @@ const Card = ({
 
   const handleDelete = () => {
     console.log("deleted");
+  };
+
+  const [likeIcon, setLikeIcon] = useState(liked);
+
+  const handleLike = async (id) => {
+    try {
+      setLikeIcon(!likeIcon);
+      await Auth.currentAuthenticatedUser();
+      const likedPost = await getFromProtected({
+        query: "likeSlang",
+        fields: ["_id", "title", "description", "likes", "bookmarked", "liked"],
+        variables: { id },
+      });
+    } catch (error) {
+      navigate("/login", { replace: true });
+    }
+  };
+
+  const handleLikesCount = () => {
+    if (liked && !likeIcon) return likes - 1;
+    else if (!liked && likeIcon) return likes + 1;
+    else return likes;
   };
 
   return (
@@ -70,9 +94,11 @@ const Card = ({
           </Text>
 
           <IcomoonIcon
-            icon={"bookmark-outline"}
+            icon={bookmarkIcon ? "bookmark" : "bookmark-outline"}
             size="20"
-            className="lg:hidden group-hover:block flex-shrink-0 cursor-pointer"
+            className={` ${
+              bookmarkIcon ? "" : "lg:hidden group-hover:block"
+            } flex-shrink-0 cursor-pointer`}
             onClick={handleBookmark}
           />
         </div>
@@ -87,11 +113,14 @@ const Card = ({
       <div className="flex mt-3 justify-between items-center w-full ">
         <div
           className="flex-shrink-0 flex space-x-1 items-center cursor-pointer"
-          onClick={handleLike}
+          onClick={() => handleLike(id)}
         >
-          <IcomoonIcon icon={"thumb-up-outline"} size="20" />
+          <IcomoonIcon
+            icon={likeIcon ? "thumb-up" : "thumb-up-outline"}
+            size="20"
+          />
           <Text variant="" className={"text-sm"} fontWeight="font-medium">
-            {likes}
+            {handleLikesCount()}
           </Text>
         </div>
         <div className="flex space-x-3">

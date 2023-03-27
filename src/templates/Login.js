@@ -5,12 +5,12 @@ import Text from "../atoms/Text";
 import { Amplify, Auth, Hub } from "aws-amplify";
 import { CognitoHostedUIIdentityProvider } from "@aws-amplify/auth";
 import awsConfig from "../aws-exports";
+import { getFromUser } from "../apis/user.api";
 
 Amplify.configure(awsConfig);
 
 const Login = () => {
   const [user, setUser] = useState(null);
-  console.log(user);
   useEffect(() => {
     const unsubscribe = Hub.listen("auth", ({ payload: { event, data } }) => {
       switch (event) {
@@ -26,9 +26,8 @@ const Login = () => {
     });
 
     Auth.currentAuthenticatedUser()
-      .then((currentUser) => setUser(currentUser))
+    .then((currentUser) => setUser(currentUser))
       .catch(() => console.log("Not signed in"));
-
     return unsubscribe;
   }, []);
   return (
