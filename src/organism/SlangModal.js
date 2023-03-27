@@ -8,6 +8,7 @@ import { useFormik, FormikProvider, Form, useField } from "formik";
 import * as Yup from "yup";
 import TextInput from "../molecules/TextInput";
 import TextareaInput from "../molecules/TextareaInput";
+import { postToProtected } from "../apis/protected.api";
 
 const SlangDetailsModal = ({
   height = "max-h-[600px] md:max-h-fit",
@@ -26,8 +27,30 @@ const SlangDetailsModal = ({
       region: "",
     },
     onSubmit: async (values) => {
-      await sleep(500);
-      alert(JSON.stringify(values, null, 2));
+      try {
+        await sleep(500);
+        let slangData = {
+          title: values.title,
+          description: values.description,
+          additionalInfo: [],
+        };
+
+        if (values.origin) {
+          slangData.additionalInfo.push(values.origin);
+        }
+
+        if (values.region) {
+          slangData.additionalInfo.push(values.region);
+        }
+        await postToProtected({
+          query: "createSlang",
+          fields: ["_id"],
+          variables: { data: slangData },
+        });
+      
+      } catch (err) {
+        console.log(err);
+      }
     },
     validationSchema: Yup.object({
       title: Yup.string()
