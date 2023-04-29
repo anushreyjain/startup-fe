@@ -7,8 +7,8 @@ const Input = ({ type, placeholder, register, name, ...property }) => (
       {...(register && { ...register(name) })}
       type={type}
       placeholder={placeholder}
-      className={`w-full pr-10 px-4 text-sm md:text-base py-2 outline-none bg-black-secondary rounded border border-white
-             focus:border-primary-900 placeholder:text-neutral-400 ${property.className}`}
+      className={`w-full pr-10 px-4 text-sm md:text-base py-2 outline-none bg-black-secondary appearance-none border border-white
+             focus:border-primary-900 placeholder:text-neutral-400 select-none ${property.className}`}
       {...property}
     />
   </div>

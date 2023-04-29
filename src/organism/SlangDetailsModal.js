@@ -5,7 +5,7 @@ import IcomoonIcon from "../components/IcomoonIcon";
 
 const SlangDetailsModal = ({
   height = "max-h-[600px] md:max-h-fit",
-  width = "min-w-screen",
+  width = "min-w-[300px] max-w-[80%]",
   closeModal,
   details,
   ...property
@@ -18,7 +18,7 @@ const SlangDetailsModal = ({
         closeModal={closeModal}
         isDisable={true}
         zIndex="z-50"
-        width={"min-w-[50vw]"}
+        width={"min-w-[50vw] max-w-[80%]"}
       >
         <div className="flex w-full flex-col items-start space-y-4 md:space-y-8">
           <div className="w-full">

@@ -8,7 +8,7 @@ const Logo = ({  ...property }) => (
       src={property.src}
       width={property.width}
       height={property.height}
-      alt={`${property.alt}`}
+      alt={property.alt}
       className={`cursor-pointer ${property.className}`}
     />
   </div>

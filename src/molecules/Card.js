@@ -3,9 +3,18 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getFromProtected } from "../apis/protected.api";
 import Text from "../atoms/Text";
-import IcomoonIcon from "../components/IcomoonIcon";
 import debounce from "../functions/debounce";
-import { FiHeart, FiBookmark } from "react-icons/fi";
+import "react-tippy/dist/tippy.css";
+
+import {
+  FiHeart,
+  FiBookmark,
+  FiCheckCircle,
+  FiClock,
+  FiEdit,
+  FiTrash2,
+} from "react-icons/fi";
+import { Tooltip } from "react-tippy";
 
 const Card = ({
   activeTab,
@@ -96,9 +105,9 @@ const Card = ({
   };
 
   return (
-    <div className="p-4 w-full justify-self-center min-h-[150px] group flex flex-col rounded bg-white hover:drop-shadow-sm active:scale-95 transform transition-all">
+    <div className="p-4 w-full justify-self-center min-h-[150px] group flex flex-col rounded-2xl bg-white hover:drop-shadow-sm active:scale-95 transform transition-all">
       <div className="flex-grow">
-        <div className="flex justify-between items-center mb-1">
+        <div className="flex justify-between items-center mb-1 break-all">
           <Text
             fontFamily={"font-Josefin-Slab"}
             fontWeight="font-bold"
@@ -117,9 +126,7 @@ const Card = ({
               <FiBookmark
                 className={`bookmark ${
                   loadingBookmark ? "bookmark-animate" : ""
-                } ${
-                  bookmarked ? "bookmark-filled" : "lg:hidden group-hover:block"
-                }   flex-shrink-0`}
+                } ${bookmarked ? "bookmark-filled" : ""}   flex-shrink-0`}
                 onClick={handleBookmark}
               />
             </>
@@ -129,7 +136,9 @@ const Card = ({
           ref={myRef}
           className="cursor-pointer"
           onClick={() => {
-            activeTab === "submission" ? handleEditSlang() : openSlangHandler();
+            activeTab === "submission"
+              ? handleEditSlang(slang)
+              : openSlangHandler();
           }}
         >
           <Text
@@ -159,17 +168,17 @@ const Card = ({
           {isAdmin && (
             <>
               {activeTab !== "submission" && (
-                <IcomoonIcon
-                  icon={"pencil-square"}
-                  size="20"
+                <FiEdit
+                  size={"20"}
+                  color="#8395a7"
                   className="lg:hidden group-hover:block cursor-pointer"
                   onClick={() => handleEdit(id)}
                 />
               )}
-              <IcomoonIcon
-                icon={"trash"}
-                size="20"
-                color={"red"}
+
+              <FiTrash2
+                size={"20"}
+                color="red"
                 className="lg:hidden group-hover:block cursor-pointer"
                 onClick={() => handleDelete(id)}
               />
@@ -178,9 +187,21 @@ const Card = ({
           {activeTab === "my-creativity" && (
             <>
               {status === "approved" ? (
-                <IcomoonIcon icon={"check-badge"} size="20" />
+                <Tooltip
+                  title="Slang Approved"
+                  position="top"
+                  trigger="mouseenter"
+                >
+                  <FiCheckCircle size={"20"} color="#2ecc71" />
+                </Tooltip>
               ) : status === "pending" ? (
-                <IcomoonIcon icon={"clock"} size="20" />
+                <Tooltip
+                  title="Approval Pending"
+                  position="top"
+                  trigger="mouseenter"
+                >
+                  <FiClock size={"20"} color="orange" />
+                </Tooltip>
               ) : (
                 ""
               )}

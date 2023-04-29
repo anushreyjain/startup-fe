@@ -16,12 +16,12 @@ const Header = ({
   return (
     <div ref={headerRef} className="fixed w-full z-10 bg-primary-300">
       <Navbar user={user} slangOfTheDay={slangOfTheDay} />
-      <div className="lg:hidden mt-4 flex flex-col space-y-2 text-center py-3 px-4 bg-white mx-4 rounded">
+      <div className="lg:hidden mt-4 flex flex-col space-y-1 text-center py-2 px-4 bg-white mx-4 rounded-2xl">
         <Text
           variant="bodySmall"
           fontWeight="font-bold"
           fontFamily={"font-Josefin-Slab"}
-          className={"italic text-lg"}
+          className={"italic text-lg text-primary-700"}
         >
           Slang of the day
         </Text>
@@ -29,7 +29,12 @@ const Header = ({
           {slangOfTheDay.title}
         </Text>
       </div>
-      <Search />
+      <Search
+        id={"search"}
+        name={"search"}
+        placeholder={"Coming Soon"}
+        value={"Coming Soon..."}
+      />
       <Tabs tabs={tabs} tabHandler={tabHandler} activeTab={activeTab} />
     </div>
   );

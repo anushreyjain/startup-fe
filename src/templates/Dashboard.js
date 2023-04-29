@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import debounce from "../functions/debounce";
 import CardsLayout from "../organism/CardsLayout";
 import Header from "../organism/Header";
-import { Triangle } from "react-loader-spinner";
 import { getFromPublic } from "../apis/public.api";
 import SlangDetailsModal from "../organism/SlangDetailsModal";
 import { getFromProtected } from "../apis/protected.api";
@@ -192,7 +191,7 @@ const Dashboard = ({ user }) => {
 
   const slangOfTheDay = {
     title:
-      "qSUQH NDAWIDJWAOID AWN DAWIDWAN DNAW  nfise nf dj isedj ise jies jfois jfioesjfiojo",
+      "Coming Soon...",
   };
 
   useEffect(() => {
@@ -221,7 +220,6 @@ const Dashboard = ({ user }) => {
         slangOfTheDay={slangOfTheDay}
         user={user}
       />
-
       <CardsLayout
         isAdmin={isAdmin}
         activeTab={activeTab}

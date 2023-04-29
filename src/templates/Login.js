@@ -30,6 +30,7 @@ const Login = () => {
       .catch(() => console.log("Not signed in"));
     return unsubscribe;
   }, []);
+
   return (
     <div className="fixed px-6 md:px-0 h-screen w-full bg-primary-300 flex justify-center items-center">
       <div className="text-center">
