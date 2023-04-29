@@ -44,6 +44,7 @@ export const postToProtected = async (options) => {
     };
     const inputTypes = {
       createSlang: "CreateSlangInput",
+      updateSlang: `UpdateSlangInput`,
     };
     const response = await axiosInstance.post("/protected", {
       query: `mutation Mutation($data:${inputTypes[options.query]}) {

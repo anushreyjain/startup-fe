@@ -5,7 +5,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 body::-webkit-scrollbar {
   width: 8px;
 }
@@ -20,7 +19,7 @@ body::-webkit-scrollbar-thumb {
       rgba(255, 255, 255, 0.2),
       rgba(255, 255, 255, 0.2)
     ),
-    #AC916B;
+    #ac916b;
   border-radius: 16px;
   outline: none;
 }
@@ -49,4 +48,88 @@ input[type="search"]::-webkit-search-results-decoration {
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.heart {
+  color: black;
+  opacity: 0.3;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+}
+
+.heart:hover{
+  color: red;
+}
+
+
+.heart-animate{
+  animation: heartbeat 1s infinite;
+  fill: red;
+  color: red;
+  opacity: 1;
+  transition: opacity 500ms ;
+}
+
+.heart-filled {
+  fill: red;
+  color: red;
+  opacity: 1;
+  transition: opacity 500ms ;
+}
+
+
+@keyframes heartbeat {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.25);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+
+.bookmark{
+  color: black;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+}
+
+
+.bookmark-filled {
+  fill: blue;
+  color: blue;
+  opacity: 1;
+  transition: opacity 500ms ;
+}
+
+
+.bookmark-animate{
+  animation: bookmarkBeat 1s infinite;
+  fill: blue;
+  color: blue;
+  opacity: 1;
+  transition: opacity 500ms ;
+}
+
+
+
+@keyframes bookmarkBeat {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.25);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }

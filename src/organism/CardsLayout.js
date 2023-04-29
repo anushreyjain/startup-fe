@@ -6,6 +6,9 @@ import { getFromPublic } from "../apis/public.api";
 import SlangDetailsModal from "./SlangDetailsModal";
 import SlangModal from "./SlangModal";
 import ProfileCards from "./ProfileCards";
+import { Auth } from "aws-amplify";
+import { getFromProtected, postToProtected } from "../apis/protected.api";
+import { Navigate } from "react-router-dom";
 
 const CardsLayout = ({
   slangDetails,
@@ -16,6 +19,10 @@ const CardsLayout = ({
 }) => {
   const [details, setDetails] = useState(null);
   const [newSlang, setNewSlang] = useState(false);
+  const [editSlang, setEditSlang] = useState(false);
+
+  const [slangData, setSlangData] = useState({});
+
   const openSlangHandler = (id) => {
     getFromPublic({
       query: "getSlang",
@@ -34,23 +41,28 @@ const CardsLayout = ({
           throw new Error(res.error);
         }
         setDetails(res);
-        console.log(res);
       })
       .catch((err) => {
         console.log("caught an error: ", err.message);
       });
 
     setDetails(true);
-    console.log("clicked", id);
   };
 
   const handleAddNewSlang = () => {
     setNewSlang(true);
+    setSlangData({});
   };
 
   const closeModal = () => {
     setDetails(null);
     setNewSlang(false);
+    setEditSlang(false);
+  };
+
+  const handleEditSlang = (slang) => {
+    setSlangData(slang);
+    setEditSlang(true);
   };
 
   const options = [
@@ -84,9 +96,55 @@ const CardsLayout = ({
     { value: "Water", label: "Water" },
   ];
 
+  const handleDeleteSlang = async (id) => {
+    try {
+      const authUser = await Auth.currentAuthenticatedUser();
+      console.log(authUser);
+      const deletedPost = await getFromProtected({
+        query: "deleteSlang",
+        fields: ["_id"],
+        variables: { id },
+      });
+      closeModal();
+      await tabHandler(activeTab);
+    } catch (error) {
+      console.log(error);
+      Navigate("/login", { replace: true });
+    }
+  };
+
+  const handleApproveSlang = async (slangData) => {
+    console.log("approved", slangData);
+    const data = {
+      _id: slangData._id,
+      title: slangData.title,
+      description: slangData.description,
+      status: "approved",
+    };
+    try {
+      await postToProtected({
+        query: "updateSlang",
+        fields: ["_id"],
+        variables: { data: data },
+      });
+      await tabHandler(activeTab);
+      closeModal();
+    } catch {}
+  };
+
   return (
     <>
-      {newSlang && <SlangModal options={options} closeModal={closeModal} />}
+      {(newSlang || editSlang) && (
+        <SlangModal
+          slangData={slangData}
+          editSlang={editSlang}
+          options={options}
+          closeModal={closeModal}
+          tabHandler={tabHandler}
+          handleDeleteSlang={handleDeleteSlang}
+          handleApproveSlang={handleApproveSlang}
+        />
+      )}
 
       {details && (
         <SlangDetailsModal closeModal={closeModal} details={details} />
@@ -118,9 +176,11 @@ const CardsLayout = ({
             key={index}
             activeTab={activeTab}
             isAdmin={isAdmin}
+            allSlangs={slangDetails}
             openSlangHandler={() => {
               openSlangHandler(slang._id);
             }}
+            handleEditSlang={handleEditSlang}
           />
         ))}
       </div>

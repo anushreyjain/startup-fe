@@ -5,8 +5,17 @@ import { getFromProtected } from "../apis/protected.api";
 import Text from "../atoms/Text";
 import IcomoonIcon from "../components/IcomoonIcon";
 import debounce from "../functions/debounce";
+import { FiHeart, FiBookmark } from "react-icons/fi";
 
-const Card = ({ activeTab, tabHandler, isAdmin, slang, openSlangHandler }) => {
+const Card = ({
+  activeTab,
+  allSlangs,
+  tabHandler,
+  isAdmin,
+  slang,
+  openSlangHandler,
+  handleEditSlang,
+}) => {
   const {
     title,
     _id: id,
@@ -30,8 +39,12 @@ const Card = ({ activeTab, tabHandler, isAdmin, slang, openSlangHandler }) => {
 
   const navigate = useNavigate();
 
+  const [loadingHeart, setLoadingHeart] = useState(false);
+  const [loadingBookmark, setLoadingBookmark] = useState(false);
+
   const handleBookmark = async () => {
     try {
+      setLoadingBookmark(true);
       await Auth.currentAuthenticatedUser();
       const bookmarkPost = await getFromProtected({
         query: "bookmarkSlang",
@@ -39,6 +52,7 @@ const Card = ({ activeTab, tabHandler, isAdmin, slang, openSlangHandler }) => {
         variables: { id },
       });
       await tabHandler(activeTab);
+      setLoadingBookmark(false);
     } catch (error) {
       navigate("/login", { replace: true });
     }
@@ -46,16 +60,15 @@ const Card = ({ activeTab, tabHandler, isAdmin, slang, openSlangHandler }) => {
 
   const handleLike = async (id) => {
     try {
-      console.log(tabHandler);
+      setLoadingHeart(true);
       const authUser = await Auth.currentAuthenticatedUser();
-      console.log(authUser);
       const likedPost = await getFromProtected({
         query: "likeSlang",
         fields: ["_id", "title", "description", "likes", "bookmarked", "liked"],
         variables: { id },
       });
-      console.log(likedPost);
       await tabHandler(activeTab);
+      setLoadingHeart(false);
     } catch (error) {
       console.log(error);
       navigate("/login", { replace: true });
@@ -63,12 +76,11 @@ const Card = ({ activeTab, tabHandler, isAdmin, slang, openSlangHandler }) => {
   };
 
   const handleEdit = (id) => {
-    console.log("edit");
+    console.log(id);
   };
 
   const handleDelete = async (id) => {
     try {
-      console.log(tabHandler);
       const authUser = await Auth.currentAuthenticatedUser();
       console.log(authUser);
       const deletedPost = await getFromProtected({
@@ -76,7 +88,6 @@ const Card = ({ activeTab, tabHandler, isAdmin, slang, openSlangHandler }) => {
         fields: ["_id"],
         variables: { id },
       });
-      console.log(deletedPost);
       await tabHandler(activeTab);
     } catch (error) {
       console.log(error);
@@ -93,22 +104,34 @@ const Card = ({ activeTab, tabHandler, isAdmin, slang, openSlangHandler }) => {
             fontWeight="font-bold"
             className={"text-base md:text-xl flex-grow cursor-pointer mr-5"}
             variant=""
-            onClick={openSlangHandler}
+            onClick={() => {
+              activeTab === "submission"
+                ? handleEditSlang(slang)
+                : openSlangHandler();
+            }}
           >
             {title}
           </Text>
           {activeTab !== "submission" && (
-            <IcomoonIcon
-              icon={bookmarked ? "bookmark" : "bookmark-outline"}
-              size="20"
-              className={` ${
-                bookmarked ? "" : "lg:hidden group-hover:block"
-              } flex-shrink-0 cursor-pointer`}
-              onClick={handleBookmark}
-            />
+            <>
+              <FiBookmark
+                className={`bookmark ${
+                  loadingBookmark ? "bookmark-animate" : ""
+                } ${
+                  bookmarked ? "bookmark-filled" : "lg:hidden group-hover:block"
+                }   flex-shrink-0`}
+                onClick={handleBookmark}
+              />
+            </>
           )}
         </div>
-        <div ref={myRef} className="cursor-pointer" onClick={openSlangHandler}>
+        <div
+          ref={myRef}
+          className="cursor-pointer"
+          onClick={() => {
+            activeTab === "submission" ? handleEditSlang() : openSlangHandler();
+          }}
+        >
           <Text
             className={`text-secondary-800 text-sm max-w-[${width}] three-line-clamp flex-grow md:text-base`}
           >
@@ -122,9 +145,10 @@ const Card = ({ activeTab, tabHandler, isAdmin, slang, openSlangHandler }) => {
             className="flex-shrink-0 flex space-x-1 items-center cursor-pointer"
             onClick={() => handleLike(id)}
           >
-            <IcomoonIcon
-              icon={liked ? "thumb-up" : "thumb-up-outline"}
-              size="20"
+            <FiHeart
+              className={`heart ${loadingHeart ? "heart-animate" : ""} ${
+                liked ? "heart-filled" : ""
+              }`}
             />
             <Text variant="" className={"text-sm"} fontWeight="font-medium">
               {likes}

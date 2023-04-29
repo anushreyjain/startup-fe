@@ -8,24 +8,33 @@ import { useFormik, FormikProvider, Form, useField } from "formik";
 import * as Yup from "yup";
 import TextInput from "../molecules/TextInput";
 import TextareaInput from "../molecules/TextareaInput";
-import { postToProtected } from "../apis/protected.api";
+import { getFromProtected, postToProtected } from "../apis/protected.api";
 
 const SlangDetailsModal = ({
   height = "max-h-[600px] md:max-h-fit",
   width = "min-w-screen",
   closeModal,
   options,
+  editSlang,
+  slangData,
+  tabHandler,
+  handleDeleteSlang,
+  handleApproveSlang,
   ...property
 }) => {
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+  const getValues = (slangData) => {
+    return {
+      title: slangData?.title || "",
+      description: slangData?.description || "",
+      origin: slangData?.additionalInfo?.[0] || "",
+      region: slangData?.additionalInfo?.[1] || "",
+    };
+  };
+
   const formik = useFormik({
-    initialValues: {
-      title: "",
-      description: "",
-      origin: "",
-      region: "",
-    },
+    initialValues: getValues(slangData),
     onSubmit: async (values) => {
       try {
         await sleep(500);
@@ -47,7 +56,8 @@ const SlangDetailsModal = ({
           fields: ["_id"],
           variables: { data: slangData },
         });
-      
+        await tabHandler("my-creativity");
+        closeModal();
       } catch (err) {
         console.log(err);
       }
@@ -82,7 +92,7 @@ const SlangDetailsModal = ({
               className="text-2xl md:text-3xl"
               variant=""
             >
-              Add a slang
+              {editSlang ? "Edit a Slang" : " Add a slang"}
             </Text>
             <div className="cursor-pointer">
               <IcomoonIcon icon={"close"} size="30" onClick={closeModal} />
@@ -131,16 +141,36 @@ const SlangDetailsModal = ({
                 placeholder="Enter slang description"
               />
               {/* <AddRemoveInputField id="example" name="example" /> */}
-              <div className="mt-8">
+              {!editSlang && (
+                <div className="mt-8 flex space-x-3">
+                  <Button
+                    typeButton="submit"
+                    variant="contained"
+                    size={"default"}
+                  >
+                    Submit
+                  </Button>
+                </div>
+              )}
+            </Form>
+            {editSlang && (
+              <div className="mt-8 flex space-x-3">
                 <Button
-                  typeButton="submit"
                   variant="contained"
                   size={"default"}
+                  onClick={() => handleApproveSlang(slangData)}
                 >
-                  Submit
+                  Approve
+                </Button>
+                <Button
+                  variant="contained"
+                  size={"default"}
+                  onClick={() => handleDeleteSlang(slangData?._id)}
+                >
+                  Delete
                 </Button>
               </div>
-            </Form>
+            )}
           </FormikProvider>
 
           {/* <InputWithLabel

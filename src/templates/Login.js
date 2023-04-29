@@ -53,7 +53,7 @@ const Login = () => {
             iconSize="22"
             iconColor={"white"}
             iconView
-            type="contained"
+            variant="contained"
             size={"default"}
             iconPosition="Left"
             className="mt-8 font-semibold"

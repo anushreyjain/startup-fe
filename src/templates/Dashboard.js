@@ -111,7 +111,14 @@ const Dashboard = ({ user }) => {
         case "trending":
           res = await getFromPublic({
             query: "getTrending",
-            fields: ["_id", "title", "description", "likes","bookmarked" , "liked"],
+            fields: [
+              "_id",
+              "title",
+              "description",
+              "likes",
+              "bookmarked",
+              "liked",
+            ],
             variables: {},
           });
           setAllSlangs(res);
@@ -120,18 +127,32 @@ const Dashboard = ({ user }) => {
         case "everything":
           res = await getFromPublic({
             query: "getEverything",
-            fields: ["_id", "title", "description", "likes", "bookmarked" , "liked"],
+            fields: [
+              "_id",
+              "title",
+              "description",
+              "likes",
+              "bookmarked",
+              "liked",
+            ],
             variables: {},
           });
           console.log(res);
           setAllSlangs(res);
           break;
 
-
         case "my-creativity":
           res = await getFromProtected({
             query: "getUserSlangs",
-            fields: ["_id", "title", "description", "likes", "bookmarked" , "liked"],
+            fields: [
+              "_id",
+              "title",
+              "description",
+              "likes",
+              "status",
+              "bookmarked",
+              "liked",
+            ],
             variables: {},
           });
           setAllSlangs(res);
@@ -140,7 +161,14 @@ const Dashboard = ({ user }) => {
         case "saved":
           res = await getFromProtected({
             query: "getSavedSlangs",
-            fields: ["_id", "title", "description", "likes","bookmarked" , "liked"],
+            fields: [
+              "_id",
+              "title",
+              "description",
+              "likes",
+              "bookmarked",
+              "liked",
+            ],
             variables: {},
           });
           setAllSlangs(res);
@@ -167,11 +195,10 @@ const Dashboard = ({ user }) => {
       "qSUQH NDAWIDJWAOID AWN DAWIDWAN DNAW  nfise nf dj isedj ise jies jfois jfioesjfiojo",
   };
 
-
   useEffect(() => {
     getFromPublic({
       query: "getEverything",
-      fields: ["_id", "title", "description", "likes","bookmarked" , "liked"],
+      fields: ["_id", "title", "description", "likes", "bookmarked", "liked"],
       variables: {},
     })
       .then((res) => {
@@ -184,9 +211,6 @@ const Dashboard = ({ user }) => {
         console.log("caught an error: ", err.message);
       });
   }, []);
-
-
-  console.log("dashboard",tabHandler);
 
   return (
     <div>
