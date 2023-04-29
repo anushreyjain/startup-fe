@@ -150,7 +150,7 @@ const CardsLayout = ({
       )}
 
       <div
-        className={`px-4 md:px-20  pt-[320px] md:pt-[310px] ${property.className}`}
+        className={`px-4 md:px-20  pt-[320px] md:pt-[310px] bg-primary-300 ${property.className}`}
       >
         {activeTab === "my-creativity" && (
           <div className="mb-5">
