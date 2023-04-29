@@ -15,8 +15,8 @@ const awsmobile = {
             "phone",
             "profile"
         ],
-        "redirectSignIn": "http://localhost:3000",
-        "redirectSignOut": "http://localhost:3000",
+        "redirectSignIn": 'https://witty-tuna-wetsuit.cyclic.app',
+        "redirectSignOut": 'https://witty-tuna-wetsuit.cyclic.app',
         "responseType": "code"
     },
     "federationTarget": "COGNITO_USER_POOLS",
