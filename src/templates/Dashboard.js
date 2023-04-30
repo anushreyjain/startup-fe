@@ -136,7 +136,6 @@ const Dashboard = ({ user }) => {
             ],
             variables: {},
           });
-          console.log(res);
           setAllSlangs(res);
           break;
 

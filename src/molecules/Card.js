@@ -24,6 +24,7 @@ const Card = ({
   slang,
   openSlangHandler,
   handleEditSlang,
+  handleEditFromCard,
 }) => {
   const {
     title,
@@ -82,10 +83,6 @@ const Card = ({
       console.log(error);
       navigate("/login", { replace: true });
     }
-  };
-
-  const handleEdit = (id) => {
-    console.log(id);
   };
 
   const handleDelete = async (id) => {
@@ -148,7 +145,7 @@ const Card = ({
           </Text>
         </div>
       </div>
-      <div className="flex mt-3 justify-between items-center w-full  h-6">
+      <div className="flex mt-3 justify-between items-center w-full h-6">
         {activeTab !== "submission" && (
           <div
             className="flex-shrink-0 flex space-x-1 items-center cursor-pointer"
@@ -164,22 +161,22 @@ const Card = ({
             </Text>
           </div>
         )}
-        <div className="flex space-x-3 items-center ">
+        <div className="flex space-x-3 items-center">
           {isAdmin && (
             <>
               {activeTab !== "submission" && (
                 <FiEdit
                   size={"20"}
                   color="#8395a7"
-                  className="lg:hidden group-hover:block cursor-pointer"
-                  onClick={() => handleEdit(id)}
+                  className="hidden lg:group-hover:block cursor-pointer"
+                  onClick={() => handleEditFromCard(id)}
                 />
               )}
 
               <FiTrash2
                 size={"20"}
                 color="red"
-                className="lg:hidden group-hover:block cursor-pointer"
+                className="hidden lg:group-hover:block cursor-pointer"
                 onClick={() => handleDelete(id)}
               />
             </>

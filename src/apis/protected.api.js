@@ -3,7 +3,6 @@ import { getProcessedVariables } from "../utils/common.util";
 
 export const getFromProtected = async (options) => {
   try {
-    console.log(options);
     const resolvers = {
       deleteSlang: `deleteSlang(${getProcessedVariables(options.variables)})`,
       likeSlang: `likeSlang(${getProcessedVariables(options.variables)})`,

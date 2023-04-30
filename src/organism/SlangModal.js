@@ -38,25 +38,42 @@ const SlangDetailsModal = ({
     onSubmit: async (values) => {
       try {
         await sleep(500);
-        let slangData = {
+        let updatedSlangData = {
           title: values.title,
           description: values.description,
           additionalInfo: [],
         };
 
         if (values.origin) {
-          slangData.additionalInfo.push(values.origin);
+          updatedSlangData.additionalInfo.push(values.origin);
         }
 
         if (values.region) {
-          slangData.additionalInfo.push(values.region);
+          updatedSlangData.additionalInfo.push(values.region);
         }
-        await postToProtected({
-          query: "createSlang",
-          fields: ["_id"],
-          variables: { data: slangData },
-        });
-        await tabHandler("my-creativity");
+
+        if (editSlang) {
+          console.log(updatedSlangData);
+          const data = {
+            _id: slangData._id,
+            title: updatedSlangData.title,
+            description: updatedSlangData.description,
+            status: "approved",
+          };
+          await postToProtected({
+            query: "updateSlang",
+            fields: ["_id"],
+            variables: { data: data },
+          });
+          await tabHandler("submission");
+        } else {
+          await postToProtected({
+            query: "createSlang",
+            fields: ["_id"],
+            variables: { data: updatedSlangData },
+          });
+          await tabHandler("my-creativity");
+        }
         closeModal();
       } catch (err) {
         console.log(err);
@@ -141,71 +158,26 @@ const SlangDetailsModal = ({
                 placeholder="Enter slang description"
               />
               {/* <AddRemoveInputField id="example" name="example" /> */}
-              {!editSlang && (
-                <div className="mt-8 flex space-x-3">
-                  <Button
-                    typeButton="submit"
-                    variant="contained"
-                    size={"default"}
-                  >
-                    Submit
-                  </Button>
-                </div>
-              )}
-            </Form>
-            {editSlang && (
               <div className="mt-8 flex space-x-3">
                 <Button
+                  typeButton="submit"
                   variant="contained"
                   size={"default"}
-                  onClick={() => handleApproveSlang(slangData)}
                 >
-                  Approve
+                  {editSlang ? "Approve" : "Submit"}
                 </Button>
-                <Button
-                  variant="contained"
-                  size={"default"}
-                  onClick={() => handleDeleteSlang(slangData?._id)}
-                >
-                  Delete
-                </Button>
+                {editSlang && (
+                  <Button
+                    variant="contained"
+                    size={"default"}
+                    onClick={() => handleDeleteSlang(slangData?._id)}
+                  >
+                    Delete
+                  </Button>
+                )}
               </div>
-            )}
+            </Form>
           </FormikProvider>
-
-          {/* <InputWithLabel
-            label={"Title"}
-            type="text"
-            placeholder={"Enter title"}
-            fontColor="text-secondary-900"
-          />
-
-          <div className="w-full flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-10">
-            <Dropdown options={options} labelText="Language Origin" />
-            <Dropdown options={options} labelText="Region it is used in" />
-          </div>
-          <Textarea
-            label={"Meaning/Description"}
-            fontColor="text-secondary-900"
-            placeholder={"Write the meaning/description of your slang"}
-          />
-
-          <div className="flex flex-col space-y-1 w-full">
-            <Text
-              variant="large"
-              className={"text-secondary-900"}
-              fontFamily={"font-Josefin-Slab"}
-              fontWeight={"font-semibold"}
-            >
-              Example/Usage
-            </Text>
-
-            <AddRemoveInputField />
-          </div>
-
-          <Button type="contained" size={"default"}>
-            Submit
-          </Button> */}
         </div>
       </DialogBox>
     </div>

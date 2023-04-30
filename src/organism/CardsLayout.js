@@ -120,15 +120,16 @@ const CardsLayout = ({
       description: slangData.description,
       status: "approved",
     };
-    try {
-      await postToProtected({
-        query: "updateSlang",
-        fields: ["_id"],
-        variables: { data: data },
-      });
-      await tabHandler(activeTab);
-      closeModal();
-    } catch {}
+    await postToProtected({
+      query: "updateSlang",
+      fields: ["_id"],
+      variables: { data: data },
+    });
+    await tabHandler(activeTab);
+  };
+
+  const handleEditFromCard = (id) => {
+    console.log(id);
   };
 
   return (
@@ -155,8 +156,8 @@ const CardsLayout = ({
         {activeTab === "my-creativity" && (
           <div className="mb-5">
             <Text variant="body" className="text-primary-900">
-             <strong> NOTE - </strong> Slangs which are under review and approved will be
-              listed here.
+              <strong> NOTE - </strong> Slangs which are under review and
+              approved will be listed here.
             </Text>
           </div>
         )}
@@ -200,6 +201,7 @@ const CardsLayout = ({
                 activeTab={activeTab}
                 isAdmin={isAdmin}
                 allSlangs={slangDetails}
+                handleEditFromCard={handleEditFromCard}
                 openSlangHandler={() => {
                   openSlangHandler(slang._id);
                 }}
