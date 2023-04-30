@@ -15,6 +15,10 @@ var options = {
 }
 app.use(express.static('build', options))
 
+app.all('*', (req, res) => {
+  res.redirect('/');
+});
+
 const port = process.env.PORT || 3000
 
 app.listen(port, () => {
