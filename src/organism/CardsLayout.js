@@ -166,7 +166,7 @@ const CardsLayout = ({
       )}
 
       <div
-        className={`px-4 md:px-20 pt-5 bg-primary-300 overflow-auto h-[calc(100vh-300px)] custom-scrollbar ${property.className}`}
+        className={`px-4 md:px-20 pt-5 bg-primary-300 overflow-auto h-[calc(100svh-300px)] custom-scrollbar ${property.className}`}
       >
         {msgTabsArr.includes(activeTab) && (
           <div className="mb-5">
