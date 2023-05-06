@@ -14,7 +14,7 @@ const Header = ({
   property,
 }) => {
   return (
-    <div ref={headerRef} className="fixed w-full z-10 bg-primary-300">
+    <div ref={headerRef} className="sticky top-0 w-full z-10 bg-primary-300">
       <Navbar user={user} slangOfTheDay={slangOfTheDay} />
       <div className="lg:hidden mt-4 flex flex-col space-y-1 text-center py-2 px-4 bg-white mx-4 rounded-2xl">
         <Text

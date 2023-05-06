@@ -61,7 +61,7 @@ const Card = ({
         fields: ["_id", "title", "description", "likes", "bookmarked", "liked"],
         variables: { id },
       });
-      await tabHandler(activeTab);
+      await tabHandler(activeTab, false);
       setLoadingBookmark(false);
     } catch (error) {
       navigate("/login", { replace: true });
@@ -77,7 +77,7 @@ const Card = ({
         fields: ["_id", "title", "description", "likes", "bookmarked", "liked"],
         variables: { id },
       });
-      await tabHandler(activeTab);
+      await tabHandler(activeTab, false);
       setLoadingHeart(false);
     } catch (error) {
       console.log(error);
@@ -94,7 +94,7 @@ const Card = ({
         fields: ["_id"],
         variables: { id },
       });
-      await tabHandler(activeTab);
+      await tabHandler(activeTab, false);
     } catch (error) {
       console.log(error);
       navigate("/login", { replace: true });

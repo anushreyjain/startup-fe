@@ -9,6 +9,7 @@ import * as Yup from "yup";
 import TextInput from "../molecules/TextInput";
 import TextareaInput from "../molecules/TextareaInput";
 import { getFromProtected, postToProtected } from "../apis/protected.api";
+import Loader from "../molecules/Loader";
 
 const SlangDetailsModal = ({
   height = "max-h-[600px] md:max-h-fit",
@@ -20,6 +21,8 @@ const SlangDetailsModal = ({
   tabHandler,
   handleDeleteSlang,
   handleApproveSlang,
+  modalLoading,
+  setModalLoading,
   ...property
 }) => {
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -36,6 +39,7 @@ const SlangDetailsModal = ({
   const formik = useFormik({
     initialValues: getValues(slangData),
     onSubmit: async (values) => {
+      setModalLoading(true);
       try {
         await sleep(500);
         let updatedSlangData = {
@@ -72,10 +76,12 @@ const SlangDetailsModal = ({
             fields: ["_id"],
             variables: { data: updatedSlangData },
           });
+          setModalLoading(false);
           await tabHandler("my-creativity");
         }
         closeModal();
       } catch (err) {
+        setModalLoading(false);
         console.log(err);
       }
     },
@@ -101,33 +107,36 @@ const SlangDetailsModal = ({
         zIndex="z-50"
         width={"min-w-[50vw]"}
       >
-        <div className="flex flex-col items-start space-y-6 md:space-y-8 w-full">
-          <div className="flex justify-between w-full items-center">
-            <Text
-              fontFamily={"font-Josefin-Slab"}
-              fontWeight="font-semibold"
-              className="text-2xl md:text-3xl"
-              variant=""
-            >
-              {editSlang ? "Edit a Slang" : " Add a slang"}
-            </Text>
-            <div className="cursor-pointer">
-              <IcomoonIcon icon={"close"} size="30" onClick={closeModal} />
+        {modalLoading ? (
+          <Loader />
+        ) : (
+          <div className="flex flex-col items-start space-y-6 md:space-y-8 w-full">
+            <div className="flex justify-between w-full items-center">
+              <Text
+                fontFamily={"font-Josefin-Slab"}
+                fontWeight="font-semibold"
+                className="text-2xl md:text-3xl"
+                variant=""
+              >
+                {editSlang ? "Edit a Slang" : " Add a slang"}
+              </Text>
+              <div className="cursor-pointer">
+                <IcomoonIcon icon={"close"} size="30" onClick={closeModal} />
+              </div>
             </div>
-          </div>
 
-          <FormikProvider value={formik}>
-            <Form className="w-full flex flex-col space-y-8">
-              <TextInput
-                label="Title"
-                id="title"
-                name="title"
-                helpText="Must be 8-20 characters and cannot contain special characters."
-                type="text"
-                fontClass="text-secondary-900"
-                placeholder="Enter slang title"
-              />
-              {/* <div className="flex lg:flex-row flex-col w-full space-y-8 lg:space-x-10 lg:space-y-0 justify-between">
+            <FormikProvider value={formik}>
+              <Form className="w-full flex flex-col space-y-8">
+                <TextInput
+                  label="Title"
+                  id="title"
+                  name="title"
+                  helpText="Must be 8-20 characters and cannot contain special characters."
+                  type="text"
+                  fontClass="text-secondary-900"
+                  placeholder="Enter slang title"
+                />
+                {/* <div className="flex lg:flex-row flex-col w-full space-y-8 lg:space-x-10 lg:space-y-0 justify-between">
                 <Dropdown
                   id="origin"
                   name="origin"
@@ -149,36 +158,38 @@ const SlangDetailsModal = ({
                   }
                 />
               </div> */}
-              <TextareaInput
-                label="Meaning/Description"
-                id="description"
-                name="description"
-                helpText="Must be 8-20 characters and cannot contain special characters."
-                fontClass="text-secondary-900"
-                placeholder="Enter slang description"
-              />
-              {/* <AddRemoveInputField id="example" name="example" /> */}
-              <div className="mt-8 flex space-x-3">
-                <Button
-                  typeButton="submit"
-                  variant="contained"
-                  size={"default"}
-                >
-                  {editSlang ? "Approve" : "Submit"}
-                </Button>
-                {editSlang && (
+                <TextareaInput
+                  label="Meaning/Description"
+                  id="description"
+                  name="description"
+                  helpText="Must be 8-20 characters and cannot contain special characters."
+                  fontClass="text-secondary-900"
+                  placeholder="Enter slang description"
+                />
+                {/* <AddRemoveInputField id="example" name="example" /> */}
+                <div className="mt-8 flex space-x-3">
                   <Button
+                    typeButton="submit"
                     variant="contained"
                     size={"default"}
-                    onClick={() => handleDeleteSlang(slangData?._id)}
                   >
-                    Delete
+                    {editSlang ? "Approve" : "Submit"}
                   </Button>
-                )}
-              </div>
-            </Form>
-          </FormikProvider>
-        </div>
+
+                  {editSlang && (
+                    <Button
+                      variant="contained"
+                      size={"default"}
+                      onClick={() => handleDeleteSlang(slangData?._id)}
+                    >
+                      Delete
+                    </Button>
+                  )}
+                </div>
+              </Form>
+            </FormikProvider>
+          </div>
+        )}
       </DialogBox>
     </div>
   );

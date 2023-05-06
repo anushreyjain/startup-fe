@@ -26,6 +26,7 @@ const CardsLayout = ({
   const [slangData, setSlangData] = useState({});
 
   const openSlangHandler = (id) => {
+    setModalLoading(true);
     setDetails(true);
     getFromPublic({
       query: "getSlang",
@@ -53,6 +54,7 @@ const CardsLayout = ({
   };
 
   const handleAddNewSlang = () => {
+    setModalLoading(false)
     setNewSlang(true);
     setSlangData({});
   };
@@ -117,6 +119,7 @@ const CardsLayout = ({
   };
 
   const handleApproveSlang = async (slangData) => {
+    setModalLoading(true);
     const data = {
       _id: slangData._id,
       title: slangData.title,
@@ -128,6 +131,7 @@ const CardsLayout = ({
       fields: ["_id"],
       variables: { data: data },
     });
+    setModalLoading(false);
     await tabHandler(activeTab);
   };
 
@@ -147,6 +151,8 @@ const CardsLayout = ({
           tabHandler={tabHandler}
           handleDeleteSlang={handleDeleteSlang}
           handleApproveSlang={handleApproveSlang}
+          modalLoading={modalLoading}
+          setModalLoading={setModalLoading}
         />
       )}
 
@@ -160,7 +166,7 @@ const CardsLayout = ({
       )}
 
       <div
-        className={`px-4 md:px-20  pt-[320px] md:pt-[310px] bg-primary-300 ${property.className}`}
+        className={`px-4 md:px-20 pt-5 bg-primary-300 overflow-auto h-[calc(100vh-300px)] custom-scrollbar ${property.className}`}
       >
         {msgTabsArr.includes(activeTab) && (
           <div className="mb-5">

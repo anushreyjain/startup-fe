@@ -7,6 +7,7 @@ import SlangDetailsModal from "../organism/SlangDetailsModal";
 import { getFromProtected } from "../apis/protected.api";
 import ProfileCards from "../organism/ProfileCards";
 import Loader from "../molecules/Loader";
+import LazyLoad from "react-lazy-load";
 const Dashboard = ({ user }) => {
   const [activeTab, setActiveTab] = useState("everything");
 
@@ -106,9 +107,9 @@ const Dashboard = ({ user }) => {
     }
   }, [isAdmin]);
 
-  const tabHandler = async (value) => {
+  const tabHandler = async (value, loading = true) => {
     try {
-      setLoading(true);
+      setLoading(loading);
       setActiveTab(value);
       let res;
       switch (value) {
@@ -212,7 +213,7 @@ const Dashboard = ({ user }) => {
   }, []);
 
   return (
-    <div>
+    <div className="flex flex-col">
       <Header
         tabs={tabList}
         tabHandler={tabHandler}
@@ -221,11 +222,7 @@ const Dashboard = ({ user }) => {
         user={user}
       />
       {loading ? (
-        <Loader
-          placeholderWidth="w-full"
-          placeholderHeight={"h-screen"}
-          loaderColor={"#AC916B"}
-        />
+        <Loader placeholderWidth="w-full" placeholderHeight={"h-fit"} />
       ) : (
         <CardsLayout
           isAdmin={isAdmin}
@@ -236,7 +233,6 @@ const Dashboard = ({ user }) => {
           setModalLoading={setModalLoading}
         />
       )}
-
       {/* <ProfileCards /> */}
     </div>
   );
