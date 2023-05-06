@@ -25,7 +25,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 .custom-scrollbar::-webkit-scrollbar {
-  width: 8px;
+  width: 4px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
