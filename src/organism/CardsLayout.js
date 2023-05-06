@@ -15,6 +15,8 @@ const CardsLayout = ({
   activeTab,
   isAdmin,
   tabHandler,
+  modalLoading,
+  setModalLoading,
   ...property
 }) => {
   const [details, setDetails] = useState(null);
@@ -24,6 +26,7 @@ const CardsLayout = ({
   const [slangData, setSlangData] = useState({});
 
   const openSlangHandler = (id) => {
+    setDetails(true);
     getFromPublic({
       query: "getSlang",
       fields: [
@@ -41,12 +44,12 @@ const CardsLayout = ({
           throw new Error(res.error);
         }
         setDetails(res);
+        setModalLoading(false);
       })
       .catch((err) => {
         console.log("caught an error: ", err.message);
+        setModalLoading(false);
       });
-
-    setDetails(true);
   };
 
   const handleAddNewSlang = () => {
@@ -132,6 +135,7 @@ const CardsLayout = ({
     console.log(id);
   };
 
+  const msgTabsArr = ["my-creativity", "saved"];
   return (
     <>
       {(newSlang || editSlang) && (
@@ -147,17 +151,25 @@ const CardsLayout = ({
       )}
 
       {details && (
-        <SlangDetailsModal closeModal={closeModal} details={details} />
+        <SlangDetailsModal
+          modalLoading={modalLoading}
+          setModalLoading={setModalLoading}
+          closeModal={closeModal}
+          details={details}
+        />
       )}
 
       <div
         className={`px-4 md:px-20  pt-[320px] md:pt-[310px] bg-primary-300 ${property.className}`}
       >
-        {activeTab === "my-creativity" && (
+        {msgTabsArr.includes(activeTab) && (
           <div className="mb-5">
             <Text variant="body" className="text-primary-900">
-              <strong> NOTE - </strong> Slangs which are under review and
-              approved will be listed here.
+              <strong> NOTE - </strong>
+              {activeTab === "my-creativity"
+                ? `Slangs which are under review and
+              approved will be listed here.`
+                : `Slangs which are saved by you will be listed here.`}
             </Text>
           </div>
         )}

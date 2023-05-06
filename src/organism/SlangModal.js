@@ -127,7 +127,7 @@ const SlangDetailsModal = ({
                 fontClass="text-secondary-900"
                 placeholder="Enter slang title"
               />
-              <div className="flex lg:flex-row flex-col w-full space-y-8 lg:space-x-10 lg:space-y-0 justify-between">
+              {/* <div className="flex lg:flex-row flex-col w-full space-y-8 lg:space-x-10 lg:space-y-0 justify-between">
                 <Dropdown
                   id="origin"
                   name="origin"
@@ -148,7 +148,7 @@ const SlangDetailsModal = ({
                     formik.setFieldValue("region", value.value)
                   }
                 />
-              </div>
+              </div> */}
               <TextareaInput
                 label="Meaning/Description"
                 id="description"

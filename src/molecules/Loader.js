@@ -1,15 +1,22 @@
 import React from "react";
 import { Triangle } from "react-loader-spinner";
 
-const Loader = ({ height, width, ...property }) => {
+const Loader = ({
+  loaderheight,
+  loaderWidth,
+  placeholderWidth,
+  placeholderHeight,
+  loaderColor,
+  ...property
+}) => {
   return (
     <div
-      className={`h-screen w-full flex items-center justify-center ${property.className}`}
+      className={`flex items-center justify-center ${placeholderWidth} ${placeholderHeight} ${property.className}`}
     >
       <Triangle
-        height={height || "80"}
-        width={width || "80"}
-        color="#AC916B"
+        height={loaderheight || "80"}
+        width={loaderWidth || "80"}
+        color={loaderColor}
         ariaLabel="triangle-loading"
         wrapperStyle={{}}
         wrapperClassName=""

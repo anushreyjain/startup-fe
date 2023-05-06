@@ -1,19 +1,12 @@
 import React, { useEffect, useState } from "react";
 import {
-  BrowserRouter,
   Routes,
   Route,
-  Navigate,
   useNavigate,
 } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import SlangDetailsModal from "./organism/SlangDetailsModal";
-import SlangModal from "./organism/SlangModal";
 import Dashboard from "./templates/Dashboard";
 import { Auth } from "aws-amplify";
 import Login from "./templates/Login";
-import { getFromPublic } from "./apis/public.api";
-import Template404 from "./templates/Template404";
 import { getFromUser } from "./apis/user.api";
 
 const App = () => {

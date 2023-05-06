@@ -6,6 +6,7 @@ import { getFromPublic } from "../apis/public.api";
 import SlangDetailsModal from "../organism/SlangDetailsModal";
 import { getFromProtected } from "../apis/protected.api";
 import ProfileCards from "../organism/ProfileCards";
+import Loader from "../molecules/Loader";
 const Dashboard = ({ user }) => {
   const [activeTab, setActiveTab] = useState("everything");
 
@@ -85,6 +86,11 @@ const Dashboard = ({ user }) => {
 
   const [tabList, setTabList] = useState([]);
 
+  const [allSlangs, setAllSlangs] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const [modalLoading, setModalLoading] = useState(true);
+
   const isAdmin =
     user?.signInUserSession?.idToken?.payload["cognito:groups"]?.includes(
       "admin"
@@ -100,10 +106,9 @@ const Dashboard = ({ user }) => {
     }
   }, [isAdmin]);
 
-  const [allSlangs, setAllSlangs] = useState([]);
-
   const tabHandler = async (value) => {
     try {
+      setLoading(true);
       setActiveTab(value);
       let res;
       switch (value) {
@@ -121,6 +126,7 @@ const Dashboard = ({ user }) => {
             variables: {},
           });
           setAllSlangs(res);
+          setLoading(false);
           break;
 
         case "everything":
@@ -137,6 +143,7 @@ const Dashboard = ({ user }) => {
             variables: {},
           });
           setAllSlangs(res);
+          setLoading(false);
           break;
 
         case "my-creativity":
@@ -154,6 +161,7 @@ const Dashboard = ({ user }) => {
             variables: {},
           });
           setAllSlangs(res);
+          setLoading(false);
           break;
 
         case "saved":
@@ -170,6 +178,7 @@ const Dashboard = ({ user }) => {
             variables: {},
           });
           setAllSlangs(res);
+          setLoading(false);
           break;
 
         case "submission":
@@ -179,7 +188,13 @@ const Dashboard = ({ user }) => {
             variables: {},
           });
           setAllSlangs(res);
+          setLoading(false);
           break;
+
+        case "profile":
+          setLoading(false);
+          break;
+
         default:
           break;
       }
@@ -189,25 +204,11 @@ const Dashboard = ({ user }) => {
   };
 
   const slangOfTheDay = {
-    title:
-      "Coming Soon...",
+    title: "Coming Soon...",
   };
 
   useEffect(() => {
-    getFromPublic({
-      query: "getEverything",
-      fields: ["_id", "title", "description", "likes", "bookmarked", "liked"],
-      variables: {},
-    })
-      .then((res) => {
-        if (res.error) {
-          throw new Error(res.error);
-        }
-        setAllSlangs(res);
-      })
-      .catch((err) => {
-        console.log("caught an error: ", err.message);
-      });
+    tabHandler("everything");
   }, []);
 
   return (
@@ -219,12 +220,23 @@ const Dashboard = ({ user }) => {
         slangOfTheDay={slangOfTheDay}
         user={user}
       />
-      <CardsLayout
-        isAdmin={isAdmin}
-        activeTab={activeTab}
-        slangDetails={allSlangs}
-        tabHandler={tabHandler}
-      />
+      {loading ? (
+        <Loader
+          placeholderWidth="w-full"
+          placeholderHeight={"h-screen"}
+          loaderColor={"#AC916B"}
+        />
+      ) : (
+        <CardsLayout
+          isAdmin={isAdmin}
+          activeTab={activeTab}
+          slangDetails={allSlangs}
+          tabHandler={tabHandler}
+          modalLoading={modalLoading}
+          setModalLoading={setModalLoading}
+        />
+      )}
+
       {/* <ProfileCards /> */}
     </div>
   );
