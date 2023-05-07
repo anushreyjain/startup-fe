@@ -69,6 +69,7 @@ const SlangDetailsModal = ({
             fields: ["_id"],
             variables: { data: data },
           });
+          setModalLoading(false);
           await tabHandler("submission");
         } else {
           await postToProtected({
