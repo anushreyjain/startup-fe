@@ -32,7 +32,7 @@ const App = () => {
           fields: ["_id"],
           variables: {},
         });
-        navigate("/dashboard", { replace: true });
+        navigate("/dashboard");
       })
       .catch(() => console.log("Not signed in"));
   }, []);

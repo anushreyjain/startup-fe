@@ -14,17 +14,17 @@ const Navbar = ({ slangOfTheDay, user }) => {
       localStorage.setItem("authToken", null);
       localStorage.setItem("username", null);
       await Auth.signOut();
-      navigate("/", { replace: true });
+      navigate("/");
     } catch (error) {
       console.log("error signing out: ", error);
     }
   }
 
   const navigateToSignin = () => {
-    navigate("/login", { replace: true });
+    navigate("/login");
   };
   const handleLogo = () => {
-    navigate("/dashboard", { replace: true });
+    navigate("/dashboard");
   }
 
   return (
