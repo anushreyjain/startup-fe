@@ -52,6 +52,10 @@ const Navbar = ({ slangOfTheDay, user }) => {
         </Text>
       </div>
 
+      <div className="lg:hidden rounded-full px-4 py-1.5 bg-black text-white text-xs">
+        BETA
+      </div>
+
       {user ? (
         <Text
           variant="body"
