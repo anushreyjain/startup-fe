@@ -222,7 +222,7 @@ const Dashboard = ({ user }) => {
         user={user}
       />
       {loading ? (
-        <Loader placeholderWidth="w-full" placeholderHeight={"h-fit"} />
+        <Loader placeholderWidth="w-full" placeholderHeight={'h-[calc(100svh-300px)]'} />
       ) : (
         <CardsLayout
           isAdmin={isAdmin}

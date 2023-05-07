@@ -23,12 +23,15 @@ const Navbar = ({ slangOfTheDay, user }) => {
   const navigateToSignin = () => {
     navigate("/login", { replace: true });
   };
+  const handleLogo = () => {
+    navigate("/dashboard", { replace: true });
+  }
 
   return (
     <div className="bg-white w-full flex justify-between items-center py-4 px-4 lg:px-20">
       <div className="flex space-x-5 items-center relative">
-        <div className="w-16 lg:w-24">
-          <Logo src="/logo.svg" alt="logo" width="100%" />
+        <div className="w-16 lg:w-24 z-10">
+          <Logo src="/logo.svg" alt="logo" width="100%" onClick={handleLogo} />
         </div>
         <BetaBadge />
         {/* <div className="bg-black absolute -right-[40%] -top-[5px] text-xs text-white rounded px-3 py-1">

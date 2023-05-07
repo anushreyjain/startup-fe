@@ -1,10 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const Logo = ({  ...property }) => (
-  <div className={`logo_wrap ${property.className}`}>
+const Logo = ({ ...property }) => (
+  <div className={`logo_wrap ${property.className}`} onClick={property.onClick}>
     <img
-      onClick={property.onClick}
       src={property.src}
       width={property.width}
       height={property.height}

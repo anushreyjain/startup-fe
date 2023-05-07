@@ -35,7 +35,7 @@ const Login = () => {
     <div className="fixed px-6 md:px-0 h-screen w-full bg-primary-300 flex justify-center items-center">
       <div className="text-center">
         <div className="rounded flex flex-col items-center px-14 py-12 md:px-24 md:py-16 bg-white">
-          <Logo src="/logo.svg" alt="logo" />
+          <Logo src="/logo.svg" alt="logo" className="pointer-events-none" />
           <div className="flex flex-col space-y-2 text-center mt-10">
             <Text
               className={"text-lg md:text-2xl text-center"}
